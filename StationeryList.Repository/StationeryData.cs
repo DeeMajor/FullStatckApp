@@ -10,10 +10,12 @@ namespace StationeryList.Repository
     public class StationeryData : IStationeryService
     {
         private readonly Database _database;
+        private readonly StoredProcedure _storedProcedure;
 
-        public StationeryData(IOptions<Database> database)
+        public StationeryData(IOptions<Database> database, StoredProcedure storedProcedure)
         {
             _database = database.Value;
+            _storedProcedure = storedProcedure;
         }
 
 
@@ -26,55 +28,51 @@ namespace StationeryList.Repository
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var sql = "spStationery_GetAll";
+                List<Stationery> stationery = (List<Stationery>) await connection.QueryAsync<Stationery>(_storedProcedure.SPStationeryGetAll, CommandType.StoredProcedure);
 
-                List<Stationery> stationery = (List<Stationery>)await connection.QueryAsync<Stationery>(sql, CommandType.StoredProcedure);
+                foreach (Stationery stat in stationery)
+                {
+                    var ItemsSql = $"{_storedProcedure.SPStationeryGetItemsForList} {stat.Id}";
+                    List<Item> items = (List<Item>)await connection.QueryAsync<Item>(ItemsSql, CommandType.StoredProcedure);
+                    stat.Items = items;
+                }
 
                 return stationery.ToList();
             }
-
-            return null;
         }
 
         public async Task<Stationery> GetStationery(int id)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var sql = $"dbo.spStationery_GetByID {id}";
-                var stationery = await connection.QueryAsync<Stationery>(sql, CommandType.StoredProcedure);
+                var sql = $"{_storedProcedure.SPStationeryGetById} {id}";
+                var multiQueries = await connection.QueryMultipleAsync(sql, CommandType.StoredProcedure);
+                var stationery = multiQueries.Read<Stationery>().First();
+                stationery.Items = multiQueries.Read<Item>().ToList();
 
-                return stationery.FirstOrDefault();
+                return stationery;
             }
-
-            throw new NotImplementedException();
         }
 
         public async Task<int> InsertStationery(Stationery stationery)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var sql = "spStationeryList_Create";
-
-                var rowsAffected = await connection.ExecuteAsync(sql, stationery, commandType: CommandType.StoredProcedure);
+                var rowsAffected = await connection.ExecuteAsync(_storedProcedure.SPStationeryCreate, stationery, commandType: CommandType.StoredProcedure);
 
                 return rowsAffected;
             }
-
-            throw new NotImplementedException();
         }
 
         public async Task<int> UpdateStationery(Stationery stationery)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var sql = "spStationeryList_Update";
 
-                var rowsAffected = await connection.ExecuteAsync(sql, stationery, commandType: CommandType.StoredProcedure);
+                var rowsAffected = await connection.ExecuteAsync(_storedProcedure.SPStationeryUpdate, stationery, commandType: CommandType.StoredProcedure);
 
                 return rowsAffected;
             }
-
-            throw new NotImplementedException();
         }
     }
 }
