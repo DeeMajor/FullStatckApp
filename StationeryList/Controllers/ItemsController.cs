@@ -29,7 +29,7 @@ namespace StationeryList.Controllers
             catch (Exception ex)
             {
 
-                return Task.FromResult(Results.BadRequest(ex.Message));
+                return Task.FromException<IResult>(ex);
             }
         }
 
@@ -38,25 +38,49 @@ namespace StationeryList.Controllers
         public Task<IResult> Get(int id)
         {
 
-            return Task.FromResult(Results.Ok(_itemService.GetItem(id).Result));
+            try
+            {
+                return Task.FromResult(Results.Ok(_itemService.GetItem(id).Result));
+            }
+            catch (Exception ex)
+            {
+
+                return Task.FromException<IResult>(ex);
+            }
         }
 
         // POST api/<ItemsController>
         [HttpPost]
         public Task<IResult> Post([FromBody] Item item)
         {
-            _itemService.InsertItem(item);
+            try
+            {
+                _itemService.InsertItem(item);
 
-            return Task.FromResult(Results.Ok());
+                return Task.FromResult(Results.Ok());
+            }
+            catch (Exception ex)
+            {
+
+                return Task.FromException<IResult>(ex);
+            }
         }
 
         // PUT api/<ItemsController>/5
         [HttpPut]
         public Task<IResult> Put([FromBody] Item item)
         {
-            _itemService.Update(item);
+            try
+            {
+                _itemService.Update(item);
 
-            return Task.FromResult(Results.Ok());
+                return Task.FromResult(Results.Ok());
+            }
+            catch (Exception ex)
+            {
+
+                return Task.FromException<IResult>(ex);
+            }
         }
 
         // DELETE api/<ItemsController>/5
@@ -64,9 +88,17 @@ namespace StationeryList.Controllers
         public Task<IResult> Delete(int id)
         {
 
-            _itemService.Delete(id);
+            try
+            {
+                _itemService.Delete(id);
 
-            return Task.FromResult(Results.Ok());
+                return Task.FromResult(Results.Ok());
+            }
+            catch (Exception ex)
+            {
+
+                return Task.FromException<IResult>(ex);
+            }
         }
     }
 }
