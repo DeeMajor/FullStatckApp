@@ -15,6 +15,7 @@ void ConfigureServices(IServiceCollection services)
 
     services.AddTransient<IItemsService, ItemData>();
     services.AddTransient<IStationeryService, StationeryData>();
+    services.AddTransient<StoredProcedure>();
 }
     // Add services to the container.
 
