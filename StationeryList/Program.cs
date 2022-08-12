@@ -1,25 +1,12 @@
-using StationeryList.Model;
-using StationeryList.Repository;
-using StationeryList.Service;
+using StationeryList.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
+ConfigServices.ConfigureServices(builder.Services, builder);
 
-ConfigureServices(builder.Services);
+// Add services to the container.
 
-void ConfigureServices(IServiceCollection services)
-{
-    services.Configure<Database>(
-        builder.Configuration.GetSection("DefaultConnectionString")
-        );
-
-    services.AddTransient<IItemsService, ItemData>();
-    services.AddTransient<IStationeryService, StationeryData>();
-    services.AddTransient<StoredProcedure>();
-}
-    // Add services to the container.
-
-    builder.Services.AddControllers();
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
