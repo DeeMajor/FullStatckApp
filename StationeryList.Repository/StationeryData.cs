@@ -28,12 +28,12 @@ namespace StationeryList.Repository
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                List<Stationery> stationery = (List<Stationery>) await connection.QueryAsync<Stationery>(_storedProcedure.SPStationeryGetAll, CommandType.StoredProcedure);
+                var stationery = (List<Stationery>) await connection.QueryAsync<Stationery>(_storedProcedure.SPStationeryGetAll, CommandType.StoredProcedure);
 
                 foreach (Stationery stat in stationery)
                 {
                     var ItemsSql = $"{_storedProcedure.SPStationeryGetItemsForList} {stat.Id}";
-                    List<Item> items = (List<Item>)await connection.QueryAsync<Item>(ItemsSql, CommandType.StoredProcedure);
+                    var items = (List<Item>) await connection.QueryAsync<Item>(ItemsSql, CommandType.StoredProcedure);
                     stat.Items = items;
                 }
 
@@ -58,7 +58,10 @@ namespace StationeryList.Repository
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var rowsAffected = await connection.ExecuteAsync(_storedProcedure.SPStationeryCreate, stationery, commandType: CommandType.StoredProcedure);
+                var rowsAffected = await connection.ExecuteAsync(
+                    _storedProcedure.SPStationeryCreate, 
+                    stationery, 
+                    commandType: CommandType.StoredProcedure);
 
                 return rowsAffected;
             }
@@ -69,7 +72,10 @@ namespace StationeryList.Repository
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
 
-                var rowsAffected = await connection.ExecuteAsync(_storedProcedure.SPStationeryUpdate, stationery, commandType: CommandType.StoredProcedure);
+                var rowsAffected = await connection.ExecuteAsync(
+                    _storedProcedure.SPStationeryUpdate, 
+                    stationery, 
+                    commandType: CommandType.StoredProcedure);
 
                 return rowsAffected;
             }

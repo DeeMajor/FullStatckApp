@@ -10,79 +10,72 @@ namespace StationeryList.Repository
     public class ItemData : IItemsService
     {
         private readonly Database _database;
+        private readonly StoredProcedure _storedProcedure;
 
-        public ItemData(IOptions<Database> database)
+        public ItemData(IOptions<Database> database, StoredProcedure storedProcedure)
         {
             _database = database.Value;
+            _storedProcedure = storedProcedure;
         }
 
         public async Task<int> Delete(int id)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var sql = $"dbo.spItem_DeleteItem {id}";
-
+                var sql = $"{_storedProcedure.SPItemDelete} {id}";
                 var rowsAffected = await connection.ExecuteAsync(sql, CommandType.StoredProcedure);
 
                 return rowsAffected;
             }
-
-            throw new NotImplementedException();
         }
 
         public async Task<List<Item>> GetAllItems()
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var sql = "dbo.spItem_GetAll";
-
-                List<Item> items = (List<Item>)await connection.QueryAsync<Item>(sql, CommandType.StoredProcedure);
+                var items = (List<Item>)await connection.QueryAsync<Item>(
+                    _storedProcedure.SPItemGetAll, 
+                    CommandType.StoredProcedure);
 
                 return items.ToList();
             }
-
-            return null;
         }
 
         public async Task<Item> GetItem(int id)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var sql = $"dbo.spItem_GetById {id}";
+                var sql = $"{_storedProcedure.SPItemGetById} {id}";
                 var items = await connection.QueryAsync<Item>(sql, CommandType.StoredProcedure);
 
                 return items.FirstOrDefault();
             }
-
-            throw new NotImplementedException();
         }
 
         public async Task<int> InsertItem(Item item)
         {            
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var sql = "spItem_CreateItem";
-
-                var rowsAffected = await connection.ExecuteAsync(sql,item, commandType: CommandType.StoredProcedure);
+                var rowsAffected = await connection.ExecuteAsync(
+                    _storedProcedure.SPItemCreate, 
+                    item, 
+                    commandType: CommandType.StoredProcedure);
 
                 return rowsAffected;
             }
-
-            throw new NotImplementedException();
         }
 
         public async Task<int> Update(Item item)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var sql = "spItemUpdateItem";
-
-                var rowsAffected = await connection.ExecuteAsync(sql, item, commandType: CommandType.StoredProcedure);
+                var rowsAffected = await connection.ExecuteAsync(
+                    _storedProcedure.SPItemUpdate, 
+                    item, 
+                    commandType: CommandType.StoredProcedure);
 
                 return rowsAffected;
             }
-
-            throw new NotImplementedException();
         }
     }
 }
