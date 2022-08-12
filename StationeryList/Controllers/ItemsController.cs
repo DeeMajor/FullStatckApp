@@ -21,8 +21,16 @@ namespace StationeryList.Controllers
         [HttpGet]
         public Task<IResult> Get()
         {
-     
-            return Task.FromResult(Results.Ok(_itemService.GetAllItems().Result));
+
+            try
+            {
+                return Task.FromResult(Results.Ok(_itemService.GetAllItems().Result));
+            }
+            catch (Exception ex)
+            {
+
+                return Task.FromResult(Results.BadRequest(ex.Message));
+            }
         }
 
         // GET api/<ItemsController>/5
