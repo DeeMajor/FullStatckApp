@@ -19,85 +19,83 @@ namespace StationeryList.Controllers
 
         // GET: api/<ItemsController>
         [HttpGet]
-        public Task<IResult> Get()
+        public async Task<IResult> Get()
         {
-
             try
             {
-                return Task.FromResult(Results.Ok(_itemService.GetAllItems().Result));
+                return await Task.FromResult(Results.Ok(_itemService.GetAllItems().Result));
             }
             catch (Exception ex)
             {
 
-                return Task.FromException<IResult>(ex);
+                return await Task.FromException<IResult>(ex);
             }
         }
 
         // GET api/<ItemsController>/5
         [HttpGet("{id}")]
-        public Task<IResult> Get(int id)
+        public async Task<IResult> Get(int id)
         {
-
             try
             {
-                return Task.FromResult(Results.Ok(_itemService.GetItem(id).Result));
+                return await Task.FromResult(Results.Ok(_itemService.GetItem(id).Result));
             }
             catch (Exception ex)
             {
 
-                return Task.FromException<IResult>(ex);
+                return await Task.FromException<IResult>(ex);
             }
         }
 
         // POST api/<ItemsController>
         [HttpPost]
-        public Task<IResult> Post([FromBody] Item item)
+        public async Task<IResult> Post([FromBody] Item item)
         {
             try
             {
-                _itemService.InsertItem(item);
+                await _itemService.InsertItem(item);
 
-                return Task.FromResult(Results.Ok());
+                return Results.Ok("Item Created Succesfully");
             }
             catch (Exception ex)
             {
 
-                return Task.FromException<IResult>(ex);
+                return await Task.FromException<IResult>(ex);
             }
         }
 
         // PUT api/<ItemsController>/5
         [HttpPut]
-        public Task<IResult> Put([FromBody] Item item)
+        public async Task<IResult> Put([FromBody] Item item)
         {
             try
             {
-                _itemService.Update(item);
+                await _itemService.Update(item);
 
-                return Task.FromResult(Results.Ok());
+                return Results.Ok("Item Updated Successfully");
             }
             catch (Exception ex)
             {
 
-                return Task.FromException<IResult>(ex);
+                return await Task.FromException<IResult>(ex);
             }
         }
 
         // DELETE api/<ItemsController>/5
         [HttpDelete("{id}")]
-        public Task<IResult> Delete(int id)
+        public async Task<IResult> Delete(int id)
         {
 
             try
             {
-                _itemService.Delete(id);
+                await _itemService.Delete(id);
 
-                return Task.FromResult(Results.Ok());
+                return Results.Ok("Item Deleted Succesfully");
             }
             catch (Exception ex)
             {
 
-                return Task.FromException<IResult>(ex);
+                return await Task.FromException<IResult>(ex);
             }
         }
     }
