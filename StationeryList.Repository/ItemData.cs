@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
 using StationeryList.Model;
+using StationeryList.Repository.Exceptions;
 using StationeryList.Service;
 using System.Data;
 using System.Data.SqlClient;
@@ -11,21 +12,24 @@ namespace StationeryList.Repository
     {
         private readonly Database _database;
         private readonly StoredProcedure _storedProcedure;
+        private readonly ExceptionHandling _exceptionHandling;
 
-        public ItemData(IOptions<Database> database, StoredProcedure storedProcedure)
+        public ItemData(IOptions<Database> database, StoredProcedure storedProcedure, ExceptionHandling exceptionHandling)
         {
             _database = database.Value;
             _storedProcedure = storedProcedure;
+            _exceptionHandling = exceptionHandling;
         }
 
-        public async Task<int> Delete(int id)
+        public async Task Delete(int id)
         {
+
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
                 var sql = $"{_storedProcedure.SPItemDelete} {id}";
                 var rowsAffected = await connection.ExecuteAsync(sql, CommandType.StoredProcedure);
 
-                return rowsAffected;
+                await _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
 
@@ -46,13 +50,13 @@ namespace StationeryList.Repository
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
                 var sql = $"{_storedProcedure.SPItemGetById} {id}";
-                var items = await connection.QueryAsync<Item>(sql, CommandType.StoredProcedure);
+                var item = await connection.QueryFirstAsync<Item>(sql, CommandType.StoredProcedure);
 
-                return items.FirstOrDefault();
+                return item;
             }
         }
 
-        public async Task<int> InsertItem(Item item)
+        public async Task InsertItem(Item item)
         {            
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
@@ -61,11 +65,11 @@ namespace StationeryList.Repository
                     item, 
                     commandType: CommandType.StoredProcedure);
 
-                return rowsAffected;
+                await _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
 
-        public async Task<int> Update(Item item)
+        public async Task Update(Item item)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
@@ -74,7 +78,7 @@ namespace StationeryList.Repository
                     item, 
                     commandType: CommandType.StoredProcedure);
 
-                return rowsAffected;
+                await _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
     }

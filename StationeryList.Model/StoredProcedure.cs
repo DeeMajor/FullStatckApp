@@ -17,7 +17,7 @@ namespace StationeryList.Model
         public readonly string SPStationeryGetAll = "spStationery_GetAll";
         public readonly string SPStationeryGetById = "spStationery_GetByID";
         public readonly string SPStationeryCreate = "spStationeryList_Create";
-        public readonly string SPStationeryDelete = "";
+        public readonly string SPStationeryDelete = "spStationery_Delete";
         public readonly string SPStationeryUpdate = "spStationeryList_Update";
     }
 }

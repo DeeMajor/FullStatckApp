@@ -1,5 +1,6 @@
 ﻿using StationeryList.Model;
 using StationeryList.Repository;
+using StationeryList.Repository.Exceptions;
 using StationeryList.Service;
 
 namespace StationeryList.Config
@@ -15,6 +16,7 @@ namespace StationeryList.Config
             services.AddTransient<IItemsService, ItemData>();
             services.AddTransient<IStationeryService, StationeryData>();
             services.AddTransient<StoredProcedure>();
+            services.AddTransient<ExceptionHandling>();
         }
     }
 }
