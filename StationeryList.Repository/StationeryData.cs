@@ -22,14 +22,14 @@ namespace StationeryList.Repository
         }
 
 
-        public async Task DeleteStationery(int id)
+        public async Task<int> DeleteStationery(int id)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
                 var sql = $"{_storedProcedure.SPStationeryDelete} {id}";
                 var rowsAffected = await connection.ExecuteAsync(sql, CommandType.StoredProcedure);
 
-                await _exceptionHandling.CheckForNull(rowsAffected);
+                return _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
 
@@ -63,7 +63,7 @@ namespace StationeryList.Repository
             }
         }
 
-        public async Task InsertStationery(Stationery stationery)
+        public async Task<int> InsertStationery(Stationery stationery)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
@@ -72,11 +72,11 @@ namespace StationeryList.Repository
                     stationery, 
                     commandType: CommandType.StoredProcedure);
 
-                await _exceptionHandling.CheckForNull(rowsAffected);
+                return _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
 
-        public async Task UpdateStationery(Stationery stationery)
+        public async Task<int> UpdateStationery(Stationery stationery)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
@@ -86,7 +86,7 @@ namespace StationeryList.Repository
                     stationery, 
                     commandType: CommandType.StoredProcedure);
 
-                await _exceptionHandling.CheckForNull(rowsAffected);
+                return _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
     }

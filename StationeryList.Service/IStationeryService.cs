@@ -11,8 +11,8 @@ namespace StationeryList.Service
     {
         Task<List<Stationery>> GetAllStationery();
         Task<Stationery> GetStationery(int id);
-        Task InsertStationery(Stationery stationery);
-        Task UpdateStationery(Stationery stationery);
-        Task DeleteStationery(int id);
+        Task<int> InsertStationery(Stationery stationery);
+        Task<int> UpdateStationery(Stationery stationery);
+        Task<int> DeleteStationery(int id);
     }
 }

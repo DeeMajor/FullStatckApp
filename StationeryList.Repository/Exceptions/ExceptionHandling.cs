@@ -9,14 +9,14 @@ namespace StationeryList.Repository.Exceptions
 {
     public class ExceptionHandling
     {
-        public Task CheckForNull(int rows)
+        public int  CheckForNull(int rows)
         {
             if (rows == 0)
             {
                 throw new Exception("Operation failed. Could not find the specified record");
             }
 
-            return Task.CompletedTask;
+            return rows;
         }
     }
 }
