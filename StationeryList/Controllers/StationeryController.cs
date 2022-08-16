@@ -21,82 +21,43 @@ namespace StationeryList.Controllers
         [HttpGet]
         public async Task<IResult> Get()
         {
-            try
-            {
-                return await Task.FromResult(Results.Ok(_stationeryService.GetAllStationery().Result));
-            }
-            catch (Exception ex)
-            {
-                
-                return await Task.FromException<IResult>(ex);
-            }
 
+            return await Task.FromResult(Results.Ok(_stationeryService.GetAllStationery().Result));
         }
 
         // GET api/<StationeryController>/5
         [HttpGet("{id}")]
         public async Task<IResult> Get(int id)
         {
-            try
-            {
-                return await Task.FromResult(Results.Ok(_stationeryService.GetStationery(id).Result));
-            }
-            catch (Exception ex)
-            {
 
-                return await Task.FromException<IResult>(ex);
-            }
+            return await Task.FromResult(Results.Ok(_stationeryService.GetStationery(id).Result));
         }
 
         // POST api/<StationeryController>
         [HttpPost]
         public async Task<IResult> Post([FromBody] Stationery stationeryList)
         {
-            try
-            {
-                await _stationeryService.InsertStationery(stationeryList);
+            await _stationeryService.InsertStationery(stationeryList);
 
-                return Results.Ok("Created stationery list successfully");
-            }
-            catch (Exception ex)
-            {
-
-                return await Task.FromException<IResult>(ex);
-            }
+            return Results.Ok("Created stationery list successfully");
         }
 
         // PUT api/<StationeryController>/5
         [HttpPut]
         public async Task<IResult> Put(Stationery stationeryList)
         {
-            try
-            {
-                await _stationeryService.UpdateStationery(stationeryList);
+            await _stationeryService.UpdateStationery(stationeryList);
 
-                return Results.Ok("Stationery list updated successfully");
-            }
-            catch (Exception ex)
-            {
-
-                return await Task.FromException<IResult>(ex);
-            }
+            return Results.Ok("Stationery list updated successfully");
         }
 
         // DELETE api/<StationeryController>/5
         [HttpDelete("{id}")]
         public async Task<IResult> Delete(int id)
         {
-            try
-            {
-                await _stationeryService.DeleteStationery(id);
+            await _stationeryService.DeleteStationery(id);
 
-                return Results.Ok("Stationery list deleted successfully");
-            }
-            catch (Exception ex)
-            {
-
-                return await Task.FromException<IResult>(ex);
-            }
+            return Results.Ok("Stationery list deleted successfully");
         }
     }
 }

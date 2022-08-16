@@ -21,7 +21,7 @@ namespace StationeryList.Repository
             _exceptionHandling = exceptionHandling;
         }
 
-        public async Task Delete(int id)
+        public async Task<int> Delete(int id)
         {
 
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
@@ -29,7 +29,7 @@ namespace StationeryList.Repository
                 var sql = $"{_storedProcedure.SPItemDelete} {id}";
                 var rowsAffected = await connection.ExecuteAsync(sql, CommandType.StoredProcedure);
 
-                await _exceptionHandling.CheckForNull(rowsAffected);
+                return _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
 
@@ -56,7 +56,7 @@ namespace StationeryList.Repository
             }
         }
 
-        public async Task InsertItem(Item item)
+        public async Task<int> InsertItem(Item item)
         {            
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
@@ -65,11 +65,11 @@ namespace StationeryList.Repository
                     item, 
                     commandType: CommandType.StoredProcedure);
 
-                await _exceptionHandling.CheckForNull(rowsAffected);
+                return _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
 
-        public async Task Update(Item item)
+        public async Task<int> Update(Item item)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
@@ -78,7 +78,7 @@ namespace StationeryList.Repository
                     item, 
                     commandType: CommandType.StoredProcedure);
 
-                await _exceptionHandling.CheckForNull(rowsAffected);
+                return _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
     }

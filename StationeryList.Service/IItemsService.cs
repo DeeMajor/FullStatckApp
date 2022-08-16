@@ -6,8 +6,8 @@ namespace StationeryList.Service
     {
         Task<List<Item>> GetAllItems();
         Task<Item> GetItem(int id);
-        Task InsertItem(Item item);
-        Task Update(Item item);
-        Task Delete(int id);
+        Task<int> InsertItem(Item item);
+        Task<int> Update(Item item);
+        Task<int> Delete(int id);
     }
 }
