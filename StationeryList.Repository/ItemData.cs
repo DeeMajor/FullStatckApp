@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
 using StationeryList.Model;
+using StationeryList.Repository.Dapper;
 using StationeryList.Repository.Exceptions;
 using StationeryList.Service;
 using System.Data;
@@ -13,12 +14,14 @@ namespace StationeryList.Repository
         private readonly Database _database;
         private readonly StoredProcedure _storedProcedure;
         private readonly ExceptionHandling _exceptionHandling;
+        private readonly IDapperWrapper _dapperWrapper;
 
-        public ItemData(IOptions<Database> database, StoredProcedure storedProcedure, ExceptionHandling exceptionHandling)
+        public ItemData(IOptions<Database> database, StoredProcedure storedProcedure, ExceptionHandling exceptionHandling, IDapperWrapper dapperWrapper)
         {
             _database = database.Value;
             _storedProcedure = storedProcedure;
             _exceptionHandling = exceptionHandling;
+            _dapperWrapper = dapperWrapper;
         }
 
         public async Task<int> Delete(int id)
@@ -27,7 +30,7 @@ namespace StationeryList.Repository
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
                 var sql = $"{_storedProcedure.SPItemDelete} {id}";
-                var rowsAffected = await connection.ExecuteAsync(sql, CommandType.StoredProcedure);
+                var rowsAffected = await _dapperWrapper.ExecuteDeleteAsync(connection, sql);
 
                 return _exceptionHandling.CheckForNull(rowsAffected);
             }
@@ -37,9 +40,7 @@ namespace StationeryList.Repository
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var items = (List<Item>)await connection.QueryAsync<Item>(
-                    _storedProcedure.SPItemGetAll, 
-                    CommandType.StoredProcedure);
+                var items = await _dapperWrapper.QueryAsync<Item>(connection, _storedProcedure.SPItemGetAll);
 
                 return items.ToList();
             }
@@ -50,7 +51,7 @@ namespace StationeryList.Repository
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
                 var sql = $"{_storedProcedure.SPItemGetById} {id}";
-                var item = await connection.QueryFirstAsync<Item>(sql, CommandType.StoredProcedure);
+                var item = await _dapperWrapper.QueryFirstAsync<Item>(connection, sql);
 
                 return item;
             }
@@ -60,10 +61,7 @@ namespace StationeryList.Repository
         {            
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var rowsAffected = await connection.ExecuteAsync(
-                    _storedProcedure.SPItemCreate, 
-                    item, 
-                    commandType: CommandType.StoredProcedure);
+                var rowsAffected = await _dapperWrapper.ExecuteInsertAsync(connection, _storedProcedure.SPItemCreate, item);
 
                 return _exceptionHandling.CheckForNull(rowsAffected);
             }
@@ -73,10 +71,7 @@ namespace StationeryList.Repository
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var rowsAffected = await connection.ExecuteAsync(
-                    _storedProcedure.SPItemUpdate, 
-                    item, 
-                    commandType: CommandType.StoredProcedure);
+                var rowsAffected = await _dapperWrapper.ExecuteUpdateAsync(connection, _storedProcedure.SPItemUpdate, item);
 
                 return _exceptionHandling.CheckForNull(rowsAffected);
             }

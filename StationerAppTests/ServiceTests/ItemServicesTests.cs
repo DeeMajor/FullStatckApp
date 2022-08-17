@@ -3,8 +3,10 @@ using NSubstitute;
 using NUnit.Framework;
 using StationeryList.Model;
 using StationeryList.Repository;
+using StationeryList.Repository.Dapper;
 using StationeryList.Repository.Exceptions;
 using StationeryList.Service;
+using System.Data;
 
 namespace StationerAppTests.ServiceTests
 {
@@ -13,6 +15,7 @@ namespace StationerAppTests.ServiceTests
         private ItemData _itemData;
         private ExceptionHandling _exception;
         private StoredProcedure _storedProcedure;
+        private IDapperWrapper _dapperWrapper;
 
         Database database = new Database()
         {
@@ -23,66 +26,105 @@ namespace StationerAppTests.ServiceTests
         public void SetUp()
         {
             _exception = Substitute.For<ExceptionHandling>();
-            _storedProcedure = new StoredProcedure();
+            _storedProcedure = Substitute.For<StoredProcedure>();
+            _dapperWrapper = Substitute.For<IDapperWrapper>();
             IOptions<Database> databaseConnection = Options.Create(database);
-            _itemData = new ItemData(databaseConnection, _storedProcedure, _exception);
+            _itemData = new ItemData(databaseConnection, _storedProcedure, _exception, _dapperWrapper);
         }
 
         [Test]
-        public void Given_GetItemsQuery_Return_AllItems()
+        public async Task Given_GetItemsQuery_Return_AllItems()
         {
-            int itemsCount = 4; 
+            var expectedItems = await Items();
 
-            var results = _itemData.GetAllItems().Result;
+            _dapperWrapper.QueryAsync<Item>(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(expectedItems);
 
-            Assert.That(results.Count, Is.EqualTo(itemsCount));
-
-        }
-
-        [Test]
-        public async Task Given_GetItemQuery_Return_Item()
-        {
-            Item expectedItems = new Item()
-            {
-                Item_Id = 20,
-                ItemName = "string",
-                ItemPrice = 0.00m,
-                ItemStore = "string",
-                ItemDescription = "string",
-                Bought = false,
-                Quantity = 0,
-                Unit = "string",
-                FK_StationeryList_Id = 5
-            };
-
-            var results = await _itemData.GetItem(7);
+            var results = await _itemData.GetAllItems();
 
             Assert.That(results, Is.EqualTo(expectedItems));
-
         }
 
         [Test]
-        public async Task Given_InsertItemExecution_Return_RowsAffected()
+        public async Task Given_GetAnItemQuery_Return_AnItem()
         {
-            Item items = new Item()
+            var expectedItem = await Items();
+
+            _dapperWrapper.QueryFirstAsync<Item>(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(expectedItem[0]);
+
+            var results = await _itemData.GetItem(1);
+            
+            Assert.That(results, Is.EqualTo(expectedItem[0]));
+        }
+
+        [Test]
+        public async Task Given_ExecuteInsertItem_Return_RowsAffected()
+        {
+            var expectedRowsAffected = 1;
+            var itemToInsert = await Items();
+
+            _dapperWrapper.ExecuteInsertAsync<Item>(Arg.Any<IDbConnection>(), Arg.Any<string>(), itemToInsert[0]).Returns(1);
+
+            var results = await _itemData.InsertItem(itemToInsert[0]);
+
+            Assert.That(results, Is.EqualTo(expectedRowsAffected));
+        }
+
+        [Test]
+        public async Task Given_ExecuteUpdateItem_Return_RowsAffected()
+        {
+            var expectedRowsAffected = 1;
+            var itemToUpdate = await Items();
+
+            _dapperWrapper.ExecuteUpdateAsync<Item>(Arg.Any<IDbConnection>(), Arg.Any<string>(), itemToUpdate[0]).Returns(1);
+
+            var results = await _itemData.Update(itemToUpdate[0]);
+
+            Assert.That(results, Is.EqualTo(expectedRowsAffected));
+        }
+
+        [Test]
+        public async Task Given_ExecutDeleteItem_Return_RowsAffected()
+        {
+            var expectedRowsAffected = 1;
+
+            _dapperWrapper.ExecuteDeleteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(1);
+
+            var results = await _itemData.Delete(1);
+
+            Assert.That(results, Is.EqualTo(expectedRowsAffected));
+        }
+
+        [Test]
+        public async Task Given_ExecuteDeleteFails_Return_Exception()
+        {
+            _dapperWrapper.ExecuteDeleteAsync(Arg.Any<IDbConnection>(), Arg.Any<string>()).Returns(0);
+
+            Assert.That(async () =>await _itemData.Delete(1), Throws.TypeOf<Exception>());
+        }
+
+        private async Task<List<Item>> Items()
+        {
+            List<Item> items = new List<Item>();
+
+            for (int x = 1; x < 11; x++)
             {
-                Item_Id = null,
-                ItemName = "string",
-                ItemPrice = 0.00m,
-                ItemStore = "string",
-                ItemDescription = "string",
-                Bought = false,
-                Quantity = 0,
-                Unit = "string",
-                FK_StationeryList_Id = null
-            };
+                Item item = new Item()
+                {
+                    Item_Id = x,
+                    ItemName = $"Name {x}",
+                    ItemDescription = $"Description {x}",
+                    ItemPrice = x,
+                    ItemStore = $"ItemStore {x}",
+                    Quantity = x,
+                    Bought = true,
+                    Unit = "KG",
+                    FK_StationeryList_Id = null
+                };
 
-            int rowsAffected = 1;
+                items.Add(item);
+            }
 
-            var results = await _itemData.InsertItem(items);
-
-            Assert.That(results, Is.EqualTo(rowsAffected));
-
+            return items;
         }
     }
 }
