@@ -1,9 +1,9 @@
 ﻿using Dapper;
 using System.Data;
 
-namespace StationeryList.Repository.Dapper
+namespace Stationery.Application.Services
 {
-    public interface IDapperWrapper
+    public interface IMapper
     {
         Task<List<T>> QueryAsync<T>(IDbConnection connection, string sql);
         Task<T> QueryFirstAsync<T>(IDbConnection connection, string sql);

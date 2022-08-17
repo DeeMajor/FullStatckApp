@@ -1,22 +1,22 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
-using StationeryList.Model;
-using StationeryList.Repository.Dapper;
-using StationeryList.Repository.Exceptions;
-using StationeryList.Service;
+using Stationery.Application.Services;
+using Stationery.Domain.Database;
+using Stationery.Domain.Entities;
+using Stationery.Infrastructure.Exceptions;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace StationeryList.Repository
+namespace Stationery.Infrastructure.Repositories
 {
-    public class ItemData : IItemsService
+    public class ItemRepository : IItemsService
     {
         private readonly Database _database;
         private readonly StoredProcedure _storedProcedure;
-        private readonly ExceptionHandling _exceptionHandling;
-        private readonly IDapperWrapper _dapperWrapper;
+        private readonly IExceptionHandling _exceptionHandling;
+        private readonly IMapper _dapperWrapper;
 
-        public ItemData(IOptions<Database> database, StoredProcedure storedProcedure, ExceptionHandling exceptionHandling, IDapperWrapper dapperWrapper)
+        public ItemRepository(IOptions<Database> database, StoredProcedure storedProcedure, IExceptionHandling exceptionHandling, IMapper dapperWrapper)
         {
             _database = database.Value;
             _storedProcedure = storedProcedure;
@@ -58,7 +58,7 @@ namespace StationeryList.Repository
         }
 
         public async Task<int> InsertItem(Item item)
-        {            
+        {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
                 var rowsAffected = await _dapperWrapper.ExecuteInsertAsync(connection, _storedProcedure.SPItemCreate, item);

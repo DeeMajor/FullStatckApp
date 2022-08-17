@@ -1,9 +1,10 @@
 ﻿using Dapper;
+using Stationery.Application.Services;
 using System.Data;
 
-namespace StationeryList.Repository.Dapper
+namespace Stationery.Infrastructure.Mapper
 {
-    public class DapperWrapper : IDapperWrapper
+    public class DapperWrapper : IMapper
     {
         public async Task<int> ExecuteDeleteAsync(IDbConnection connection, string sql)
         {
@@ -22,7 +23,7 @@ namespace StationeryList.Repository.Dapper
 
         public async Task<List<T>> QueryAsync<T>(IDbConnection connection, string sql)
         {
-            return (List<T>) await connection.QueryAsync<T>(sql, CommandType.StoredProcedure);
+            return (List<T>)await connection.QueryAsync<T>(sql, CommandType.StoredProcedure);
         }
 
         public async Task<T> QueryFirstAsync<T>(IDbConnection connection, string sql)

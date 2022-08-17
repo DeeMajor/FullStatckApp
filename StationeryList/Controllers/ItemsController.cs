@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StationeryList.Model;
-using StationeryList.Service;
+using Stationery.Application.Services;
+using Stationery.Domain.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace StationeryList.Controllers
+namespace Stationery.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -15,7 +15,7 @@ namespace StationeryList.Controllers
         {
             _itemService = itemService;
         }
-        
+
 
         // GET: api/<ItemsController>
         [HttpGet]

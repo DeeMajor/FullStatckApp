@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using StationeryList.Model;
+using Stationery.Domain.Common;
 using System.Net;
 
-namespace StationeryList.Config
+namespace Stationery.Api.Config
 {
     public static class ExceptionMiddlewareExtensions
     {

@@ -1,21 +1,21 @@
 ﻿using Microsoft.Extensions.Options;
 using NSubstitute;
 using NUnit.Framework;
-using StationeryList.Model;
-using StationeryList.Repository;
-using StationeryList.Repository.Dapper;
-using StationeryList.Repository.Exceptions;
-using StationeryList.Service;
+using Stationery.Application.Services;
+using Stationery.Domain.Database;
+using Stationery.Domain.Entities;
+using Stationery.Infrastructure.Exceptions;
+using Stationery.Infrastructure.Repositories;
 using System.Data;
 
 namespace StationerAppTests.ServiceTests
 {
     internal class ItemServicesTests
     {
-        private ItemData _itemData;
+        private ItemRepository _itemData;
         private ExceptionHandling _exception;
         private StoredProcedure _storedProcedure;
-        private IDapperWrapper _dapperWrapper;
+        private IMapper _dapperWrapper;
 
         Database database = new Database()
         {
@@ -27,9 +27,9 @@ namespace StationerAppTests.ServiceTests
         {
             _exception = Substitute.For<ExceptionHandling>();
             _storedProcedure = Substitute.For<StoredProcedure>();
-            _dapperWrapper = Substitute.For<IDapperWrapper>();
+            _dapperWrapper = Substitute.For<IMapper>();
             IOptions<Database> databaseConnection = Options.Create(database);
-            _itemData = new ItemData(databaseConnection, _storedProcedure, _exception, _dapperWrapper);
+            _itemData = new ItemRepository(databaseConnection, _storedProcedure, _exception, _dapperWrapper);
         }
 
         [Test]

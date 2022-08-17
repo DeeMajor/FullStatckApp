@@ -1,4 +1,4 @@
-﻿namespace StationeryList.Model
+﻿namespace Stationery.Domain.Database
 {
     public class Database
     {

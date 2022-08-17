@@ -1,22 +1,22 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
-using StationeryList.Model;
-using StationeryList.Repository.Dapper;
-using StationeryList.Repository.Exceptions;
-using StationeryList.Service;
+using Stationery.Application.Services;
+using Stationery.Domain.Database;
+using Stationery.Domain.Entities;
+using Stationery.Infrastructure.Exceptions;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace StationeryList.Repository
+namespace Stationery.Infrastructure.Repositories
 {
-    public class StationeryData : IStationeryService
+    public class StationeryRepository : IStationeryService
     {
         private readonly Database _database;
         private readonly StoredProcedure _storedProcedure;
-        private readonly ExceptionHandling _exceptionHandling;
-        private readonly IDapperWrapper _dapperWrapper;
+        private readonly IExceptionHandling _exceptionHandling;
+        private readonly IMapper _dapperWrapper;
 
-        public StationeryData(IOptions<Database> database, StoredProcedure storedProcedure, ExceptionHandling exceptionHandling, IDapperWrapper dapperWrapper)
+        public StationeryRepository(IOptions<Database> database, StoredProcedure storedProcedure, IExceptionHandling exceptionHandling, IMapper dapperWrapper)
         {
             _database = database.Value;
             _storedProcedure = storedProcedure;
@@ -36,13 +36,13 @@ namespace StationeryList.Repository
             }
         }
 
-        public async Task<List<Stationery>> GetAllStationery()
+        public async Task<List<StationeryList>> GetAllStationery()
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
-            {                
-                var stationery = await _dapperWrapper.QueryAsync<Stationery>(connection, _storedProcedure.SPStationeryGetAll);
+            {
+                var stationery = await _dapperWrapper.QueryAsync<StationeryList>(connection, _storedProcedure.SPStationeryGetAll);
 
-                foreach (Stationery stat in stationery)
+                foreach (StationeryList stat in stationery)
                 {
                     var ItemsSql = $"{_storedProcedure.SPStationeryGetItemsForList} {stat.Id}";
                     var items = await _dapperWrapper.QueryAsync<Item>(connection, ItemsSql);
@@ -53,20 +53,20 @@ namespace StationeryList.Repository
             }
         }
 
-        public async Task<Stationery> GetStationery(int id)
+        public async Task<StationeryList> GetStationery(int id)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
                 var sql = $"{_storedProcedure.SPStationeryGetById} {id}";
                 var multiQueries = await _dapperWrapper.QueryMultipleAsync(connection, sql);
-                var stationery = multiQueries.Read<Stationery>().First();
+                var stationery = multiQueries.Read<StationeryList>().First();
                 stationery.Items = multiQueries.Read<Item>().ToList();
 
                 return stationery;
             }
         }
 
-        public async Task<int> InsertStationery(Stationery stationery)
+        public async Task<int> InsertStationery(StationeryList stationery)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
@@ -76,7 +76,7 @@ namespace StationeryList.Repository
             }
         }
 
-        public async Task<int> UpdateStationery(Stationery stationery)
+        public async Task<int> UpdateStationery(StationeryList stationery)
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {

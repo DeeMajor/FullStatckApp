@@ -1,15 +1,10 @@
-﻿using StationeryList.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Stationery.Application.Services;
 
-namespace StationeryList.Repository.Exceptions
+namespace Stationery.Infrastructure.Exceptions
 {
-    public class ExceptionHandling
+    public class ExceptionHandling : IExceptionHandling
     {
-        public int  CheckForNull(int rows)
+        public int CheckForNull(int rows)
         {
             if (rows == 0)
             {
