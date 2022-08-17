@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StationeryList.Model
+namespace Stationery.Domain.Common
 {
     public class ErrorDetails
     {

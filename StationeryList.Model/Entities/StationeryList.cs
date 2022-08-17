@@ -1,6 +1,6 @@
-﻿namespace StationeryList.Model
+﻿namespace Stationery.Domain.Entities
 {
-    public class Stationery
+    public class StationeryList
     {
         public int? Id { get; set; }
         public string Grade { get; set; }

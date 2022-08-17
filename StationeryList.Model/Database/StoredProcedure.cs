@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StationeryList.Model
+namespace Stationery.Domain.Database
 {
     public class StoredProcedure
     {

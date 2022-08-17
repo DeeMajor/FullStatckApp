@@ -1,6 +1,6 @@
-﻿using StationeryList.Model;
+﻿using Stationery.Domain.Entities;
 
-namespace StationeryList.Service
+namespace Stationery.Application.Services
 {
     public interface IItemsService
     {

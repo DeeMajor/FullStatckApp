@@ -1,24 +1,27 @@
 ﻿using Dapper;
 using Microsoft.Extensions.Options;
-using StationeryList.Model;
-using StationeryList.Repository.Exceptions;
-using StationeryList.Service;
+using Stationery.Application.Services;
+using Stationery.Domain.Database;
+using Stationery.Domain.Entities;
+using Stationery.Infrastructure.Exceptions;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace StationeryList.Repository
+namespace Stationery.Infrastructure.Repositories
 {
-    public class ItemData : IItemsService
+    public class ItemRepository : IItemsService
     {
         private readonly Database _database;
         private readonly StoredProcedure _storedProcedure;
-        private readonly ExceptionHandling _exceptionHandling;
+        private readonly IExceptionHandling _exceptionHandling;
+        private readonly IMapper _dapperWrapper;
 
-        public ItemData(IOptions<Database> database, StoredProcedure storedProcedure, ExceptionHandling exceptionHandling)
+        public ItemRepository(IOptions<Database> database, StoredProcedure storedProcedure, IExceptionHandling exceptionHandling, IMapper dapperWrapper)
         {
             _database = database.Value;
             _storedProcedure = storedProcedure;
             _exceptionHandling = exceptionHandling;
+            _dapperWrapper = dapperWrapper;
         }
 
         public async Task<int> Delete(int id)
@@ -27,7 +30,7 @@ namespace StationeryList.Repository
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
                 var sql = $"{_storedProcedure.SPItemDelete} {id}";
-                var rowsAffected = await connection.ExecuteAsync(sql, CommandType.StoredProcedure);
+                var rowsAffected = await _dapperWrapper.ExecuteDeleteAsync(connection, sql);
 
                 return _exceptionHandling.CheckForNull(rowsAffected);
             }
@@ -37,9 +40,7 @@ namespace StationeryList.Repository
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var items = (List<Item>)await connection.QueryAsync<Item>(
-                    _storedProcedure.SPItemGetAll, 
-                    CommandType.StoredProcedure);
+                var items = await _dapperWrapper.QueryAsync<Item>(connection, _storedProcedure.SPItemGetAll);
 
                 return items.ToList();
             }
@@ -50,20 +51,17 @@ namespace StationeryList.Repository
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
                 var sql = $"{_storedProcedure.SPItemGetById} {id}";
-                var item = await connection.QueryFirstAsync<Item>(sql, CommandType.StoredProcedure);
+                var item = await _dapperWrapper.QueryFirstAsync<Item>(connection, sql);
 
                 return item;
             }
         }
 
         public async Task<int> InsertItem(Item item)
-        {            
+        {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var rowsAffected = await connection.ExecuteAsync(
-                    _storedProcedure.SPItemCreate, 
-                    item, 
-                    commandType: CommandType.StoredProcedure);
+                var rowsAffected = await _dapperWrapper.ExecuteInsertAsync(connection, _storedProcedure.SPItemCreate, item);
 
                 return _exceptionHandling.CheckForNull(rowsAffected);
             }
@@ -73,10 +71,7 @@ namespace StationeryList.Repository
         {
             using (IDbConnection connection = new SqlConnection(_database.ConnectionString))
             {
-                var rowsAffected = await connection.ExecuteAsync(
-                    _storedProcedure.SPItemUpdate, 
-                    item, 
-                    commandType: CommandType.StoredProcedure);
+                var rowsAffected = await _dapperWrapper.ExecuteUpdateAsync(connection, _storedProcedure.SPItemUpdate, item);
 
                 return _exceptionHandling.CheckForNull(rowsAffected);
             }

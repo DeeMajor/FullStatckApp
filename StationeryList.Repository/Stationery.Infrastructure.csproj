@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StationeryList.Model\StationeryList.Model.csproj" />
-    <ProjectReference Include="..\StationeryList.Service\StationeryList.Service.csproj" />
+    <ProjectReference Include="..\StationeryList.Model\Stationery.Domain.csproj" />
+    <ProjectReference Include="..\StationeryList.Service\Stationery.Application.csproj" />
   </ItemGroup>
 
 </Project>

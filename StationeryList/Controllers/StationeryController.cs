@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using StationeryList.Model;
-using StationeryList.Service;
+using Stationery.Application.Services;
+using Stationery.Domain.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace StationeryList.Controllers
+namespace Stationery.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -35,7 +35,7 @@ namespace StationeryList.Controllers
 
         // POST api/<StationeryController>
         [HttpPost]
-        public async Task<IResult> Post([FromBody] Stationery stationeryList)
+        public async Task<IResult> Post([FromBody] StationeryList stationeryList)
         {
             await _stationeryService.InsertStationery(stationeryList);
 
@@ -44,7 +44,7 @@ namespace StationeryList.Controllers
 
         // PUT api/<StationeryController>/5
         [HttpPut]
-        public async Task<IResult> Put(Stationery stationeryList)
+        public async Task<IResult> Put(StationeryList stationeryList)
         {
             await _stationeryService.UpdateStationery(stationeryList);
 

@@ -1,4 +1,4 @@
-using StationeryList.Config;
+using Stationery.Api.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 

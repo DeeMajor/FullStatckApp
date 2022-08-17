@@ -1,9 +1,10 @@
-﻿using StationeryList.Model;
-using StationeryList.Repository;
-using StationeryList.Repository.Exceptions;
-using StationeryList.Service;
+﻿using Stationery.Application.Services;
+using Stationery.Domain.Database;
+using Stationery.Infrastructure.Exceptions;
+using Stationery.Infrastructure.Mapper;
+using Stationery.Infrastructure.Repositories;
 
-namespace StationeryList.Config
+namespace Stationery.Api.Config
 {
     public class ConfigServices
     {
@@ -13,10 +14,11 @@ namespace StationeryList.Config
                 builder.Configuration.GetSection("DefaultConnectionString")
                 );
 
-            services.AddTransient<IItemsService, ItemData>();
-            services.AddTransient<IStationeryService, StationeryData>();
+            services.AddTransient<IItemsService, ItemRepository>();
+            services.AddTransient<IStationeryService, StationeryRepository>();
+            services.AddTransient<IMapper, DapperWrapper>();
             services.AddTransient<StoredProcedure>();
-            services.AddTransient<ExceptionHandling>();
+            services.AddTransient<IExceptionHandling, ExceptionHandling>();
         }
     }
 }
