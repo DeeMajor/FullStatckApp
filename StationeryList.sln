@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stationery.Api", "StationeryList\Stationery.Api.csproj", "{C100231E-8FBA-4524-9229-3D59E3FF264C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stationery.Api", "Stationery.Api\Stationery.Api.csproj", "{C100231E-8FBA-4524-9229-3D59E3FF264C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stationery.Infrastructure", "StationeryList.Repository\Stationery.Infrastructure.csproj", "{E95B8E86-7C27-4055-8D9A-2D13879E654C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stationery.Infrastructure", "Stationery.Infrastructure\Stationery.Infrastructure.csproj", "{E95B8E86-7C27-4055-8D9A-2D13879E654C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stationery.Application", "StationeryList.Service\Stationery.Application.csproj", "{7E6B052F-7810-4DAC-BAA5-B3B3A86CEA75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stationery.Application", "Stationery.Application\Stationery.Application.csproj", "{7E6B052F-7810-4DAC-BAA5-B3B3A86CEA75}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stationery.Domain", "StationeryList.Model\Stationery.Domain.csproj", "{5FB338D5-6B8A-406F-918C-006F89BFC4D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Stationery.Domain", "Stationery.Domain\Stationery.Domain.csproj", "{5FB338D5-6B8A-406F-918C-006F89BFC4D6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StationerAppTests", "StationerAppTests\StationerAppTests.csproj", "{010B4200-9095-4958-A5FA-BC4070399449}"
 EndProject

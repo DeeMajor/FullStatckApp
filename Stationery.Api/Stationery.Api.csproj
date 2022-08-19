@@ -39,8 +39,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StationeryList.Repository\Stationery.Infrastructure.csproj" />
-    <ProjectReference Include="..\StationeryList.Service\Stationery.Application.csproj" />
+    <ProjectReference Include="..\Stationery.Application\Stationery.Application.csproj" />
+    <ProjectReference Include="..\Stationery.Infrastructure\Stationery.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,5 @@
-﻿using Stationery.Domain.Entities;
+﻿
+using Stationery.Domain.Entities;
 
 namespace Stationery.Application.Services
 {
