@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Stationery.Application.Services;
 using Stationery.Domain.Database;
 using Stationery.Domain.Entities;
+using Stationery.Infrastructure.Database;
 using Stationery.Infrastructure.Exceptions;
 using Stationery.Infrastructure.Repositories;
 using System.Data;
@@ -14,10 +15,9 @@ namespace StationerAppTests.ServiceTests
     {
         private ItemRepository _itemData;
         private ExceptionHandling _exception;
-        private StoredProcedure _storedProcedure;
         private IMapper _dapperWrapper;
 
-        Database database = new Database()
+        Connection _connecta = new Connection()
         {
             ConnectionString = "Server=localhost;Database=DbStationeryList;Trusted_Connection=True;"
         };
@@ -26,10 +26,9 @@ namespace StationerAppTests.ServiceTests
         public void SetUp()
         {
             _exception = Substitute.For<ExceptionHandling>();
-            _storedProcedure = Substitute.For<StoredProcedure>();
             _dapperWrapper = Substitute.For<IMapper>();
-            IOptions<Database> databaseConnection = Options.Create(database);
-            _itemData = new ItemRepository(databaseConnection, _storedProcedure, _exception, _dapperWrapper);
+            IOptions<Connection> connecta = Options.Create(_connecta);
+            _itemData = new ItemRepository(connecta, _exception, _dapperWrapper);
         }
 
         [Test]
