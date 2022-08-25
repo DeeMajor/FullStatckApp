@@ -1,9 +1,9 @@
-﻿using Dapper;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
+using Stationery.Api.Interfaces;
+using Stationery.Api.Models.Common;
+using Stationery.Api.Models.Entities;
+using Stationery.Api.Repository.Database;
 using Stationery.Application.Services;
-using Stationery.Data.Access.Database;
-using Stationery.Domain.Entities;
-using Stationery.Infrastructure.Exceptions;
 using System.Data;
 using System.Data.SqlClient;
 

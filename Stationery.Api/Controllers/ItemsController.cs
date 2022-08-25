@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Stationery.Api.Agents;
+using Stationery.Api.Models.Entities;
 using Stationery.Application.Services;
-using Stationery.Domain.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,10 +11,10 @@ namespace Stationery.Api.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        private readonly IItemsService _itemService;
-        public ItemsController(IItemsService itemService)
+        private ItemAgent _itemAgent;
+        public ItemsController(ItemAgent itemAgent)
         {
-            _itemService = itemService;
+            _itemAgent = itemAgent;
         }
 
 
@@ -22,7 +23,7 @@ namespace Stationery.Api.Controllers
         public async Task<IResult> Get()
         {
 
-            return await Task.FromResult(Results.Ok(_itemService.GetAllItems().Result));
+            return await Task.FromResult(Results.Ok(_itemAgent.GetItems().Result));
         }
 
         // GET api/<ItemsController>/5
@@ -30,7 +31,7 @@ namespace Stationery.Api.Controllers
         public async Task<IResult> Get(int id)
         {
 
-            return await Task.FromResult(Results.Ok(_itemService.GetItem(id).Result));
+            return await Task.FromResult(Results.Ok(_itemAgent.GetItem(id).Result));
 
         }
 
@@ -38,7 +39,7 @@ namespace Stationery.Api.Controllers
         [HttpPost]
         public async Task<IResult> Post([FromBody] Item item)
         {
-            await _itemService.InsertItem(item);
+            await _itemAgent.InsertItem(item);
 
             return Results.Ok("Item Created Succesfully");
         }
@@ -47,7 +48,7 @@ namespace Stationery.Api.Controllers
         [HttpPut]
         public async Task<IResult> Put([FromBody] Item item)
         {
-            await _itemService.Update(item);
+            await _itemAgent.UpdateItem(item);
 
             return Results.Ok("Item Updated Successfully");
         }
@@ -56,7 +57,7 @@ namespace Stationery.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IResult> Delete(int id)
         {
-            await _itemService.Delete(id);
+            await _itemAgent.DeleteItem(id);
 
             return Results.Ok("Item Deleted Succesfully");
         }

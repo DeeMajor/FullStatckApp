@@ -1,4 +1,4 @@
-﻿namespace Stationery.Data.Access.Database
+﻿namespace Stationery.Api.Repository.Database
 {
     public static class StoredProcedure
     {

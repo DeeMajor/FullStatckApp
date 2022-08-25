@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Stationery.Api.Interfaces;
+using Stationery.Api.Models.Entities;
 using Stationery.Application.Services;
-using Stationery.Domain.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

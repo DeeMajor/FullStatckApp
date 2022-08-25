@@ -11,36 +11,24 @@
   <ItemGroup>
     <Compile Remove="DatabaseServices\**" />
     <Compile Remove="Fixtures\**" />
-    <Compile Remove="Interfaces\**" />
-    <Compile Remove="Models\**" />
     <Compile Remove="ServiceLayer\**" />
     <Content Remove="DatabaseServices\**" />
     <Content Remove="Fixtures\**" />
-    <Content Remove="Interfaces\**" />
-    <Content Remove="Models\**" />
     <Content Remove="ServiceLayer\**" />
     <EmbeddedResource Remove="DatabaseServices\**" />
     <EmbeddedResource Remove="Fixtures\**" />
-    <EmbeddedResource Remove="Interfaces\**" />
-    <EmbeddedResource Remove="Models\**" />
     <EmbeddedResource Remove="ServiceLayer\**" />
     <None Remove="DatabaseServices\**" />
     <None Remove="Fixtures\**" />
-    <None Remove="Interfaces\**" />
-    <None Remove="Models\**" />
     <None Remove="ServiceLayer\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.14.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Stationery.Application\Stationery.Application.csproj" />
-    <ProjectReference Include="..\Stationery.Infrastructure\Stationery.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

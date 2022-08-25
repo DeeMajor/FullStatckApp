@@ -18,9 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Stationery.Application\Stationery.Application.csproj" />
-    <ProjectReference Include="..\Stationery.Domain\Stationery.Domain.csproj" />
-    <ProjectReference Include="..\Stationery.Infrastructure\Stationery.Infrastructure.csproj" />
+    <ProjectReference Include="..\Stationery.Api\Stationery.Api.csproj" />
   </ItemGroup>
 
 </Project>

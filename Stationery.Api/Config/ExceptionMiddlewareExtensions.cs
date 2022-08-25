@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using Stationery.Domain.Common;
+using Stationery.Api.Models.Common;
 using System.Net;
 
 namespace Stationery.Api.Config

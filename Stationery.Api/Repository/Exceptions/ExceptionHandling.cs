@@ -1,4 +1,6 @@
-﻿namespace Stationery.Data.Access.Exceptions
+﻿using Stationery.Api.Interfaces;
+
+namespace Stationery.Api.Repository.Exceptions
 {
     public class ExceptionHandling : IExceptionHandling
     {
