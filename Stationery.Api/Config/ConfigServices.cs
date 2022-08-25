@@ -1,7 +1,9 @@
-﻿using Stationery.Application.Services;
-using Stationery.Infrastructure.Database;
-using Stationery.Infrastructure.Exceptions;
-using Stationery.Infrastructure.Mapper;
+﻿using Stationery.Api.Agents;
+using Stationery.Api.Interfaces;
+using Stationery.Api.Models.Common;
+using Stationery.Api.Repository.Exceptions;
+using Stationery.Api.Repository.Mapper;
+using Stationery.Application.Services;
 using Stationery.Infrastructure.Repositories;
 
 namespace Stationery.Api.Config
@@ -18,6 +20,7 @@ namespace Stationery.Api.Config
             services.AddTransient<IStationeryService, StationeryRepository>();
             services.AddTransient<IMapper, DapperWrapper>();
             services.AddTransient<IExceptionHandling, ExceptionHandling>();
+            services.AddTransient<ItemAgent>();
         }
     }
 }

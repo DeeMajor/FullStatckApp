@@ -1,4 +1,4 @@
-﻿namespace Stationery.Data.Access.Database
+﻿namespace Stationery.Api.Models.Common
 {
     public class Connection
     {

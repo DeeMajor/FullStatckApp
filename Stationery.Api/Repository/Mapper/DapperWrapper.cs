@@ -1,7 +1,8 @@
 ﻿using Dapper;
+using Stationery.Application.Services;
 using System.Data;
 
-namespace Stationery.Data.Access.Mapper
+namespace Stationery.Api.Repository.Mapper
 {
     public class DapperWrapper : IMapper
     {
