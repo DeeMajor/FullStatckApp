@@ -4,6 +4,7 @@ using System.Data;
 
 namespace Stationery.Api.Repository.Mapper
 {
+    /* This is not part of the scope. I am doing this just to explore. I want to see if I will be able to switch ORMs as I learn different types */
     public class DapperWrapper : IMapper
     {
         public async Task<int> ExecuteDeleteAsync(IDbConnection connection, string sql)
