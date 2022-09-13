@@ -3,6 +3,7 @@ using System.Data;
 
 namespace Stationery.Application.Services
 {
+    /* This is not part of the scope. I am doing this just to explore. I want to see if I will be able to switch ORMs as I learn different types */
     public interface IMapper
     {
         Task<List<T>> QueryAsync<T>(IDbConnection connection, string sql);
