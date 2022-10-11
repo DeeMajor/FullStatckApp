@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.accordion-button {
+  background-color: #e8e9e9 !important;
+}
+.dropdown-toggle::after {
+  display: none !important; 
+}
