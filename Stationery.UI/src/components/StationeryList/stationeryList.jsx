@@ -1,9 +1,15 @@
-import Accordion from "react-bootstrap/Accordion";
+import { Button, Accordion } from "react-bootstrap";
 import RemoveItem from "./removeItem";
 import React, { useContext, useState } from "react";
 import { itemsContext } from "../../App";
+import {
+  useGetStationery,
+  useDeleteStationery,
+} from "../Repository/stationeryRepo";
 
 function StationeryList() {
+  const staioneryList = useGetStationery();
+  const items = useContext(itemsContext);
   const [myLists, setLists] = useState();
   const [modal, setModal] = useState();
 
@@ -18,6 +24,10 @@ function StationeryList() {
 
   const handleCloseModal = () => {
     setModal();
+  };
+
+  const HandleDeleteStationery = (id) => {
+    useDeleteStationery(id);
   };
 
   const handleModal = (item, list) => {
@@ -36,10 +46,14 @@ function StationeryList() {
     <React.Fragment>
       {modal}
       <Accordion flush>
-        {myLists.map((list) => (
-          <Accordion.Item eventKey={list.listId} key={list.listId} list={list}>
-            <Accordion.Header className="sticky-top">
-              {list.Name}
+        {staioneryList.map((list) => (
+          <Accordion.Item eventKey={list.id} key={list.id} list={list}>
+            <Accordion.Header className="sticky-top ">
+              <a
+                className="ms-1 me-5 bi bi-x-circle-fill text-center text-decoration-none link-danger"
+                onClick={() => HandleDeleteStationery(list.id)}
+              ></a>
+              {list.child}
             </Accordion.Header>
             <Accordion.Body>
               <div className="row gy-5 gx-5">

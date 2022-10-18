@@ -10,6 +10,5 @@
         public int Quantity { get; set; }
         public string Unit { get; set; }
         public bool Bought { get; set; }
-        public int? FK_StationeryList_Id { get; set; }
     }
 }

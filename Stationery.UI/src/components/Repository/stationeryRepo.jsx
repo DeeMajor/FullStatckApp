@@ -3,30 +3,39 @@ import { useEffect, useState } from "react";
 
 const url = "https://localhost:7088/api/Stationery";
 
-function useGetStationery(props, myStatList) {
+function useGetStationery(props) {
   const [stationeryLists, setStationList] = useState([]);
 
   useEffect(() => {
-    {
-      axios
-        .get(`${url}`)
-        .then((response) => response.data)
-        .then((data) => {
-          setStationList(data.value);
-        })
-        .catch((error) => console.error(`Error: ${error}`));
+    async function fetchData() {
+      const request = await axios.get(`${url}`);
+      setStationList(request.data.value);
     }
-  }, [myStatList]);
-
+    fetchData();
+  }, []);
+  /*   do {} while (stationeryLists !== undefined); */
   return stationeryLists;
 }
 
 function usePostStationery(stationeryList) {
   console.log(stationeryList);
-  axios.post(url, stationeryList).then((response) => {
+
+  async function Post() {
+    const request = await axios.post(url, stationeryList);
+    console.log(request.data);
+  }
+  Post();
+
+  /* axios.post(url, stationeryList).then((response) => {
     console.log(response.data);
-  });
+  }); */
 }
 
+function useDeleteStationery(id) {
+  axios
+    .delete(`${url}/${id}`)
+    .then(() => console.log("Delete successful"))
+    .catch((error) => console.error(`Error: ${error}`));
+}
 /* export default usePostStationery; */
-export { useGetStationery, usePostStationery };
+export { useGetStationery, usePostStationery, useDeleteStationery };
