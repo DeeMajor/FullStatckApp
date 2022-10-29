@@ -38,16 +38,16 @@ function CreateList(props) {
             />
           </FloatingLabel>
 
-          <p className="fw-light ms-2">
+          {/*  <p className="fw-light ms-2">
             <i className="bi bi-plus text-success" role="button"></i>
             <input
               readOnly={true}
-              value={props.item.Name}
-              placeholder={props.item.Name}
+              value={props.item.itemName}
+              placeholder={props.item.itemName}
               className="border border-white"
               {...register("item")}
             />
-          </p>
+          </p> */}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="" onClick={() => props.onClose()}>

@@ -3,8 +3,8 @@ using Stationery.Api.Interfaces;
 using Stationery.Api.Models.Common;
 using Stationery.Api.Repository.Exceptions;
 using Stationery.Api.Repository.Mapper;
+using Stationery.Api.Repository.Repositories;
 using Stationery.Application.Services;
-using Stationery.Infrastructure.Repositories;
 
 namespace Stationery.Api.Config
 {
@@ -18,9 +18,11 @@ namespace Stationery.Api.Config
 
             services.AddTransient<IItemsService, ItemRepository>();
             services.AddTransient<IStationeryService, StationeryRepository>();
+            services.AddTransient<IItemListService, ItemListRepository>();
             services.AddTransient<IMapper, DapperWrapper>();
             services.AddTransient<IExceptionHandling, ExceptionHandling>();
             services.AddTransient<ItemAgent>();
+            services.AddTransient<ItemListAgent>();
         }
     }
 }

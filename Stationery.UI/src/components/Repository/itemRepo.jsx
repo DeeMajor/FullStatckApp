@@ -13,7 +13,6 @@ function useGetItems(props) {
     }
     fetchData();
   }, []);
-  /*   do {} while (stationeryLists !== undefined); */
   return items;
 }
 

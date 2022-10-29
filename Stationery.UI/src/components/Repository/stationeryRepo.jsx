@@ -25,10 +25,6 @@ function usePostStationery(stationeryList) {
     console.log(request.data);
   }
   Post();
-
-  /* axios.post(url, stationeryList).then((response) => {
-    console.log(response.data);
-  }); */
 }
 
 function useDeleteStationery(id) {

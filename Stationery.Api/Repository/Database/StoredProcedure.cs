@@ -13,5 +13,10 @@
         public const string SPStationeryCreate = "spStationeryList_Create";
         public const string SPStationeryDelete = "spStationery_Delete";
         public const string SPStationeryUpdate = "spStationeryList_Update";
+        public const string SPItemListCreate = "spItemlIST_Create";
+        public const string SPItemListDelete = "spItemlIST_Delete";
+        public const string SPItemListGetAll = "spItemlIST_GetAll";
+        public const string SPItemListGetById = "spItemlIST_GetById";
+        public const string SPItemListUpdate = "spItemlIST_Update";
     }
 }
