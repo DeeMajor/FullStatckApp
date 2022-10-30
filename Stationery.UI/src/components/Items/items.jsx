@@ -10,26 +10,15 @@ import {
   useGetAllItemLists,
 } from "../Repository/itemListRepo";
 
-function Items() {
+function Items(props) {
   //context
-  const items = useContext(itemsContext);
-  const stat = useContext(statListsContext);
-
-  const listItems = useGetAllItemLists();
 
   //states
-  const [itemsList, setItems] = useState();
   const [stationeryList, setStat] = useState();
   const [modal, setModal] = useState();
   const [addItemModal, setAddModal] = useState();
   const [isActive, setActive] = useState();
   const [allListItems, setItemLists] = useState();
-
-  useEffect(() => {
-    setStat(stat);
-    setItems(items);
-    setItemLists(listItems);
-  }, [stat]);
 
   //functions
   const handleCloseModal = () => {
@@ -88,9 +77,9 @@ function Items() {
     <div onClick={isActive !== undefined ? handleAlertClick : undefined}>
       {modal}
       {addItemModal}
-      {stationeryList !== undefined && (
+      {props.items !== undefined && (
         <div className="row gy-5 gx-5">
-          {itemsList.map((item) => (
+          {props.items.map((item) => (
             <React.Fragment key={item.item_Id}>
               <div className="col-md-6 col-lg-3 col-12">
                 <div
@@ -116,7 +105,7 @@ function Items() {
                           Save {item.itemName} to...
                         </h6>
                         <hr />
-                        {ShowLists(item.item_Id).map((list) => (
+                        {/*  {ShowLists(item.item_Id).map((list) => (
                           <Dropdown.Item key={list.id}>
                             <h6
                               onClick={() =>
@@ -126,7 +115,7 @@ function Items() {
                               {list.child}
                             </h6>
                           </Dropdown.Item>
-                        ))}
+                        ))} */}
                         <hr />
                         {/* <div onClick={() => handleModal(item, stationeryList)}>
                           <i

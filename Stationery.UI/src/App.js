@@ -8,33 +8,76 @@ import { useGetItems } from "./components/Repository/itemRepo";
 
 function App() {
   const staioneryList = useGetStationery();
-  const items = useGetItems();
+  const itemsData = useGetItems();
 
+  const [stList, setstList] = useState();
+  const [items, setItems] = useState();
   const [component, setComponent] = useState();
 
   useEffect(() => {
-    setComponent(<StationeryList />);
-  }, []);
+    setstList(staioneryList);
+  }, [staioneryList]);
+
+  useEffect(() => {
+    setItems(itemsData);
+  }, [itemsData]);
+
+  useEffect(() => {
+    setComponent(StionaeryListComponent);
+  }, [stList]);
+
+  const handleStatCreate = (stat) => {};
+
+  const handleStatUpdate = (stat) => {};
+
+  const handleStatDelete = (id) => {};
+
+  const handleStatPost = (stat) => {};
+
+  const handleItemCreate = (item) => {};
+
+  const handleItemUpdate = (item) => {};
+
+  const handleItemDelete = (id) => {};
+
+  const handleItemPost = (item) => {};
+
+  const StionaeryListComponent = (
+    <StationeryList
+      List={stList}
+      items={items}
+      Create={handleStatCreate}
+      Update={handleStatUpdate}
+      Delete={handleStatDelete}
+      Post={handleStatPost}
+    />
+  );
+
+  const ItemsComponent = (
+    <Items
+      List={staioneryList}
+      items={items}
+      Create={handleItemCreate}
+      Update={handleItemUpdate}
+      Delete={handleItemDelete}
+      Post={handleItemPost}
+    />
+  );
 
   const HandleLink = (component) => {
     if (component === "items") {
-      setComponent(<Items />);
+      setComponent(ItemsComponent);
     } else if (component === "Stationery") {
-      setComponent(<StationeryList />);
+      setComponent(StionaeryListComponent);
     }
   };
 
   return (
     <React.Fragment>
-      <itemsContext.Provider value={items}>
-        <statListsContext.Provider value={staioneryList}>
-          <NavBar onPage={HandleLink} />
-          <div className="container">{component}</div>
-        </statListsContext.Provider>
-      </itemsContext.Provider>
+      <NavBar onPage={HandleLink} />
+      <div className="container">{component}</div>
     </React.Fragment>
   );
 }
-export const itemsContext = React.createContext();
-export const statListsContext = React.createContext();
+
 export default App;

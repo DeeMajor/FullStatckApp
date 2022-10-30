@@ -9,18 +9,9 @@ import {
 import { statListsContext } from "../../App";
 import { useDeleteListItem } from "../Repository/itemListRepo";
 
-function StationeryList() {
-  const stationery = useContext(statListsContext);
-
-  const [myLists, setLists] = useState();
-  const [modal, setModal] = useState();
-
-  useEffect(() => {
-    setLists(stationery);
-  }, [stationery]);
-
+function StationeryList(props) {
   const HandleDeleteItem = (list, itemId) => {
-    console.log(myLists);
+    /*  console.log(myLists);
     const lists = [...myLists];
     const index = lists.indexOf(list);
     const items = lists[index].items.filter((i) => i.itemId !== itemId);
@@ -29,21 +20,21 @@ function StationeryList() {
     setLists(lists);
     useDeleteListItem(itemId);
     console.log(myLists);
-    setModal();
+    setModal(); */
   };
 
   const handleCloseModal = () => {
-    setModal();
+    /* setModal(); */
   };
 
   const HandleDeleteStationery = (id) => {
-    useDeleteStationery(id);
+    /*  useDeleteStationery(id);
     const updateList = myLists.filter((l) => l.id !== id);
-    setLists(updateList);
+    setLists(updateList); */
   };
 
   const handleModal = (item, list) => {
-    setModal(
+    /*  setModal(
       <RemoveItem
         show={true}
         item={item}
@@ -51,11 +42,11 @@ function StationeryList() {
         onClose={handleCloseModal}
         onDelete={HandleDeleteItem}
       />
-    );
+    ); */
   };
 
   const HandleCreate = (listName) => {
-    const newList = {
+    /* const newList = {
       Child: listName,
       Status: "Uncomplete",
     };
@@ -82,17 +73,17 @@ function StationeryList() {
 
     usePostStationery(newList);
     setLists([...stationery, tempList]);
-    setModal();
+    setModal(); */
   };
 
   const handleCreateModal = () => {
-    setModal(
+    /*  setModal(
       <CreateList
         show={true}
         onClose={handleCloseModal}
         onCreate={HandleCreate}
       />
-    );
+    ); */
   };
 
   return (
@@ -108,10 +99,10 @@ function StationeryList() {
         </a>
       </div>
 
-      {modal}
+      {/* modal} */}
       <Accordion flush>
-        {myLists !== undefined &&
-          myLists.map((list) => (
+        {props.List !== undefined &&
+          props.List.map((list) => (
             <Accordion.Item eventKey={list.id} key={list.id} list={list}>
               <Accordion.Header className="sticky-top ">
                 <a
