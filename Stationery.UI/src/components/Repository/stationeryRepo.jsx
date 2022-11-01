@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 const url = "https://localhost:7088/api/Stationery";
 
-function useGetStationery(props) {
+function useGetStationery() {
   const [stationeryLists, setStationList] = useState([]);
 
   useEffect(() => {
@@ -18,13 +18,18 @@ function useGetStationery(props) {
 }
 
 function usePostStationery(stationeryList) {
-  console.log(stationeryList);
+  let exitCode = 1;
 
-  async function Post() {
-    const request = await axios.post(url, stationeryList);
-    console.log(request.data);
-  }
-  Post();
+  axios
+    .post(url, stationeryList)
+    .then((exitCode = exitCode - 1))
+    .catch((exitCode = exitCode - 1));
+
+  /*   if (request.data.statusCode === 200) {
+    exitCode = 1;
+  } */
+
+  return exitCode;
 }
 
 function useDeleteStationery(id) {

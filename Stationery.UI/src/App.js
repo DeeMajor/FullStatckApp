@@ -3,7 +3,10 @@ import StationeryList from "./components/StationeryList/stationeryList";
 import Items from "./components/Items/items";
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import { useGetStationery } from "./components/Repository/stationeryRepo";
+import {
+  useGetStationery,
+  usePostStationery,
+} from "./components/Repository/stationeryRepo";
 import { useGetItems } from "./components/Repository/itemRepo";
 
 function App() {
@@ -26,7 +29,41 @@ function App() {
     setComponent(StionaeryListComponent);
   }, [stList]);
 
-  const handleStatCreate = (stat) => {};
+  const HandleStatCreate = (listName) => {
+    const newList = {
+      Child: listName,
+      Status: "Uncomplete",
+    };
+
+    let newId = null;
+
+    if (stList.length === 0) {
+      newId = 1;
+    } else {
+      newId = stList[stList.length - 1].id + 1;
+    }
+
+    const tempList = {
+      id: newId,
+      items: [],
+      child: listName,
+      status: "Uncomplete",
+    };
+
+    const response = usePostStationery(newList);
+
+    console.log("Test me", response);
+
+    if (response === 0) {
+      setstList([...stList, tempList]);
+
+      return response;
+    } else {
+      return response;
+    }
+
+    console.log(response);
+  };
 
   const handleStatUpdate = (stat) => {};
 
@@ -46,7 +83,7 @@ function App() {
     <StationeryList
       List={stList}
       items={items}
-      Create={handleStatCreate}
+      Create={HandleStatCreate}
       Update={handleStatUpdate}
       Delete={handleStatDelete}
       Post={handleStatPost}

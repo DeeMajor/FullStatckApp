@@ -31,10 +31,10 @@ function Items(props) {
   };
 
   const ShowLists = (itemId) => {
-    console.log(allListItems);
-    const itemList = allListItems.filter((l) => l.fK_ItemId_Id === itemId);
+    console.log(props.List);
+    const itemList = props.List.filter((l) => l.fK_ItemId_Id === itemId);
     const statIds = [];
-    let list = stationeryList;
+    let list = props.List;
 
     itemList.forEach((list) => {
       statIds.push(list.fK_StationeryList_Id);
@@ -105,7 +105,7 @@ function Items(props) {
                           Save {item.itemName} to...
                         </h6>
                         <hr />
-                        {/*  {ShowLists(item.item_Id).map((list) => (
+                        {ShowLists(item.item_Id).map((list) => (
                           <Dropdown.Item key={list.id}>
                             <h6
                               onClick={() =>
@@ -115,7 +115,7 @@ function Items(props) {
                               {list.child}
                             </h6>
                           </Dropdown.Item>
-                        ))} */}
+                        ))}
                         <hr />
                         {/* <div onClick={() => handleModal(item, stationeryList)}>
                           <i

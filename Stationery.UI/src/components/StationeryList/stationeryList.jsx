@@ -1,5 +1,7 @@
 import { Accordion, Button } from "react-bootstrap";
 import RemoveItem from "./removeItem";
+import Success from "./success";
+import Error from "./Error";
 import CreateList from "../StationeryList/createList";
 import React, { useContext, useState, useEffect } from "react";
 import {
@@ -10,6 +12,9 @@ import { statListsContext } from "../../App";
 import { useDeleteListItem } from "../Repository/itemListRepo";
 
 function StationeryList(props) {
+  const [modal, setModal] = useState();
+  const [toast, setToast] = useState(false);
+
   const HandleDeleteItem = (list, itemId) => {
     /*  console.log(myLists);
     const lists = [...myLists];
@@ -24,7 +29,8 @@ function StationeryList(props) {
   };
 
   const handleCloseModal = () => {
-    /* setModal(); */
+    setModal();
+    setToast();
   };
 
   const HandleDeleteStationery = (id) => {
@@ -46,48 +52,31 @@ function StationeryList(props) {
   };
 
   const HandleCreate = (listName) => {
-    /* const newList = {
-      Child: listName,
-      Status: "Uncomplete",
-    };
+    const resp = props.Create(listName);
 
-    let newId = null;
-
-    if (myLists === undefined) {
-      newId = 1;
+    setModal();
+    if (resp === 0) {
+      setToast(
+        <Success show={true} onClose={handleCloseModal} listName={listName} />
+      );
     } else {
-      newId = myLists[myLists.length - 1].id;
+      setToast(<Error show={true} onClose={handleCloseModal} />);
     }
-
-    console.log(newId);
-
-    const tempList = {
-      id: newId,
-      grade: "",
-      description: "",
-      child: listName,
-      totalPrice: "",
-      school: "",
-      status: "Uncomplete",
-    };
-
-    usePostStationery(newList);
-    setLists([...stationery, tempList]);
-    setModal(); */
   };
 
   const handleCreateModal = () => {
-    /*  setModal(
+    setModal(
       <CreateList
         show={true}
         onClose={handleCloseModal}
         onCreate={HandleCreate}
       />
-    ); */
+    );
   };
 
   return (
     <React.Fragment>
+      {toast}
       <div className="text-center mb-3">
         <h2>STATIONERY LIST</h2>
         <a
@@ -99,7 +88,7 @@ function StationeryList(props) {
         </a>
       </div>
 
-      {/* modal} */}
+      {modal}
       <Accordion flush>
         {props.List !== undefined &&
           props.List.map((list) => (
@@ -136,6 +125,7 @@ function StationeryList(props) {
                     </React.Fragment>
                   ))}
                 </div>
+                <h2>sd</h2>
               </Accordion.Body>
             </Accordion.Item>
           ))}

@@ -1,23 +1,22 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
-function AlertDismissible(props) {
+function Error(props) {
   return (
-    <Modal
-      size=""
-      show={props.show}
-      onClick={() => props.onClose()}
-      aria-labelledby="example-modal-sizes-title-sm"
-    >
-      <Modal.Body className="bg-danger" closeButton>
-        Something went wrong...
-        <i
-          className=" ms-2 me-1 bi bi-plus-circle-fill link-dark float-end"
-          role="button"
-        ></i>
+    <Modal show={props.show} onHide={() => props.onClose()}>
+      <Modal.Header closeButton>
+        <Modal.Title>ERROR</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="bg-danger">
+        <p>Something went wrong, Please try again or contact admin.</p>
       </Modal.Body>
+      <Modal.Footer>
+        <Button variant="dark" onClick={() => props.onClose()}>
+          Okay
+        </Button>
+      </Modal.Footer>
     </Modal>
   );
 }
 
-export default AlertDismissible;
+export default Error;
