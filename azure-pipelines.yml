@@ -6,9 +6,6 @@
 trigger:
 - main
 
-pool:
-  vmImage: 'Default'
-
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
