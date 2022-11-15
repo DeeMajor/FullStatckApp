@@ -1,7 +1,7 @@
 import { Modal, Button } from "react-bootstrap";
 import React from "react";
 
-function RemoveStationery(id) {
+function RemoveStationery(props) {
   return (
     <Modal show={props.show} onHide={() => props.onClose()}>
       <Modal.Body className="text-center">
@@ -9,7 +9,7 @@ function RemoveStationery(id) {
           {" "}
           Remove{" "}
           <span className="text-danger fw-bold">
-            <u>{props.list.Name}</u>
+            <u>{props.list.child}</u>
           </span>
           ?
         </p>
@@ -24,7 +24,7 @@ function RemoveStationery(id) {
           <Button
             className="ms-2 btn-sm"
             variant="danger"
-            onClick={() => props.onDelete(props.list)}
+            onClick={() => props.onDelete(props.list.id)}
           >
             remove
           </Button>
@@ -35,4 +35,3 @@ function RemoveStationery(id) {
 }
 
 export default RemoveStationery;
-id;

@@ -4,17 +4,26 @@ import Modal from "react-bootstrap/Modal";
 
 function Success(props) {
   return (
-    <Modal show={props.show} onHide={() => props.onClose()}>
-      <Modal.Header closeButton>
-        <Modal.Title>SUCCESS</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="bg-success">
-        Stationery list for{" "}
-        <span className="text-primary">{props.listName} </span>has been
-        successfuly created.
+    <Modal
+      show={props.show}
+      onHide={() => props.onClose()}
+      className="bg-dark bg-opacity-25"
+    >
+      <Modal.Header
+        className="bg-success bg-opacity-25"
+        closeButton
+      ></Modal.Header>
+      <Modal.Body className="bg-success bg-opacity-25 text-center">
+        {props.message}
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="success" onClick={() => props.onClose()}>
+      <Modal.Footer
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+        className="bg-success bg-opacity-25"
+      >
+        <Button variant="dark" onClick={() => props.onClose()}>
           Okay
         </Button>
       </Modal.Footer>

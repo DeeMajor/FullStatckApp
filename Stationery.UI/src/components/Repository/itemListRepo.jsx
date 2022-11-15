@@ -30,10 +30,7 @@ function useGetAllItemLists() {
 }
 
 function useDeleteListItem(id) {
-  axios
-    .delete(`${url}${id}`)
-    .then(() => console.log("Delete successful"))
-    .catch((error) => console.error(`Error: ${error}`));
+  return axios.delete(`${url}${id}`);
 }
 
 function usePostListItem(itemList) {

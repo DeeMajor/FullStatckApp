@@ -1,7 +1,7 @@
 import { Modal, Button } from "react-bootstrap";
 import React from "react";
 
-function RemveItem(props) {
+function RemoveItem(props) {
   return (
     <Modal show={props.show} onHide={() => props.onClose()}>
       <Modal.Body className="text-center">
@@ -34,4 +34,4 @@ function RemveItem(props) {
   );
 }
 
-export default RemveItem;
+export default RemoveItem;

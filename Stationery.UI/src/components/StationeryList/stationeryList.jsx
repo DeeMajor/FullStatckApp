@@ -1,67 +1,114 @@
 import { Accordion, Button } from "react-bootstrap";
 import RemoveItem from "./removeItem";
+import RemoveStationery from "./RemovetStationery";
 import Success from "./success";
 import Error from "./Error";
 import CreateList from "../StationeryList/createList";
 import React, { useContext, useState, useEffect } from "react";
-import {
-  usePostStationery,
-  useDeleteStationery,
-} from "../Repository/stationeryRepo";
-import { statListsContext } from "../../App";
-import { useDeleteListItem } from "../Repository/itemListRepo";
+import ListGroup from "react-bootstrap/ListGroup";
+import Update from "./Update";
 
 function StationeryList(props) {
   const [modal, setModal] = useState();
-  const [toast, setToast] = useState(false);
 
-  const HandleDeleteItem = (list, itemId) => {
-    /*  console.log(myLists);
-    const lists = [...myLists];
-    const index = lists.indexOf(list);
-    const items = lists[index].items.filter((i) => i.itemId !== itemId);
-    lists[index].items = items;
-    setLists([]);
-    setLists(lists);
-    useDeleteListItem(itemId);
-    console.log(myLists);
-    setModal(); */
+  const HandleDeleteItem = async (list, itemId) => {
+    setModal();
+    const resp = await props.DeleteStatItem(list, itemId);
+    if (resp !== 1) {
+      await props.fetch();
+      const message = "Item has been removed successfully";
+      setModal(
+        <Success show={true} message={message} onClose={handleCloseModal} />
+      );
+    } else {
+      setModal(<Error show={true} onClose={handleCloseModal} />);
+    }
   };
 
   const handleCloseModal = () => {
     setModal();
-    setToast();
   };
 
-  const HandleDeleteStationery = (id) => {
-    /*  useDeleteStationery(id);
-    const updateList = myLists.filter((l) => l.id !== id);
-    setLists(updateList); */
-  };
-
-  const handleModal = (item, list) => {
-    /*  setModal(
-      <RemoveItem
-        show={true}
-        item={item}
-        list={list}
-        onClose={handleCloseModal}
-        onDelete={HandleDeleteItem}
-      />
-    ); */
-  };
-
-  const HandleCreate = (listName) => {
-    const resp = props.Create(listName);
-
+  const HandleDeleteStationery = async (id) => {
     setModal();
-    if (resp === 0) {
-      setToast(
-        <Success show={true} onClose={handleCloseModal} listName={listName} />
+    const resp = await props.Delete(id);
+    if (resp !== 1) {
+      await props.fetch();
+      const message = "List has been removed";
+      setModal(
+        <Success show={true} message={message} onClose={handleCloseModal} />
       );
     } else {
-      setToast(<Error show={true} onClose={handleCloseModal} />);
+      setModal(<Error show={true} onClose={handleCloseModal} />);
     }
+  };
+
+  const HandleCreate = async (list) => {
+    const resp = await props.PostList(list);
+    setModal();
+    if (resp !== 1) {
+      await props.fetch();
+      const message = "List successfully created";
+      setModal(
+        <Success
+          show={true}
+          onClose={handleCloseModal}
+          message={message}
+          listName={list.Child}
+        />
+      );
+    } else {
+      const message =
+        "List could not be created. Please try again or contact admin if issue persists.";
+      setModal(
+        <Error show={true} message={message} onClose={handleCloseModal} />
+      );
+    }
+  };
+
+  const HandleUpdate = async (list) => {
+    const resp = await props.Update(list);
+    setModal();
+    if (resp !== 1) {
+      const message = "List successfully Updated";
+      setModal(
+        <Success
+          show={true}
+          onClose={handleCloseModal}
+          message={message}
+          listName={list.Child}
+        />
+      );
+    } else {
+      const message =
+        "List could not be Updated. Please try again or contact admin if issue persists.";
+      setModal(
+        <Error show={true} message={message} onClose={handleCloseModal} />
+      );
+    }
+  };
+  const handleBought = async (list, item) => {};
+
+  const handleRemoveItemModal = async (list, item) => {
+    setModal(
+      <RemoveItem
+        show={true}
+        onClose={handleCloseModal}
+        onDelete={HandleDeleteItem}
+        list={list}
+        item={item}
+      />
+    );
+  };
+  const handleUpdateModal = (list) => {
+    setModal(
+      <Update
+        show={true}
+        list={list}
+        onUpdate={HandleUpdate}
+        onClose={handleCloseModal}
+      />
+    );
   };
 
   const handleCreateModal = () => {
@@ -74,62 +121,96 @@ function StationeryList(props) {
     );
   };
 
+  const handleDeleteStationarModal = (list) => {
+    setModal(
+      <RemoveStationery
+        show={true}
+        onClose={handleCloseModal}
+        onDelete={HandleDeleteStationery}
+        list={list}
+      />
+    );
+  };
+
   return (
     <React.Fragment>
-      {toast}
-      <div className="text-center mb-3">
-        <h2>STATIONERY LIST</h2>
-        <a
-          className="mx-auto my-auto"
-          role="button"
-          onClick={() => handleCreateModal()}
-        >
-          Create New
-        </a>
-      </div>
+      <div className="">
+        <div className="text-center mb-3">
+          <h2>STATIONERY LIST</h2>
+          <a
+            className="mx-auto my-auto btn btn-secondary"
+            role="button"
+            onClick={() => handleCreateModal()}
+          >
+            Create New
+          </a>
+        </div>
 
-      {modal}
-      <Accordion flush>
-        {props.List !== undefined &&
-          props.List.map((list) => (
-            <Accordion.Item eventKey={list.id} key={list.id} list={list}>
-              <Accordion.Header className="sticky-top ">
-                <a
-                  className="ms-1 me-5 bi bi-x-circle-fill text-center text-decoration-none link-danger"
-                  role="button"
-                  onClick={() => HandleDeleteStationery(list.id)}
-                ></a>
-                {list.child}
-              </Accordion.Header>
-              <Accordion.Body>
-                <div className="row gy-5 gx-5">
-                  {list.items.map((item) => (
-                    <React.Fragment key={item.item_Id}>
-                      <div className="col-md-6 col-lg-3 col-12">
-                        <div className="card text-center bg-dark text-dark bg-opacity-10">
-                          <h5 className="card-title">
-                            {item.itemName}
-                            <i
-                              onClick={() => handleModal(item, list)}
-                              className="float-end bi bi-x-circle-fill link-dark"
-                              role="button"
-                            ></i>
-                          </h5>
-                          <img
-                            src="https://bit.ly/3R0TRlE"
-                            className="card-img-top mx-auto d-block"
-                            alt="..."
-                          />
+        {modal}
+        <Accordion flush>
+          {props.List !== undefined &&
+            props.List.map((list) => (
+              <Accordion.Item eventKey={list.id} key={list.id} list={list}>
+                <Accordion.Header className="sticky-top ">
+                  <a
+                    className="ms-1 me-5 bi bi-x-circle-fill text-center text-decoration-none link-danger"
+                    role="button"
+                    onClick={() => handleDeleteStationarModal(list)}
+                  ></a>
+                  <a role="button" className="text-primary ms-1 me-5">
+                    <i
+                      className="bi bi-pencil-square"
+                      onClick={() => handleUpdateModal(list)}
+                    ></i>
+                  </a>{" "}
+                  {list.child}
+                  <span className="text-capitalize">'s List</span>
+                </Accordion.Header>
+
+                <Accordion.Body>
+                  <ListGroup variant="flush">
+                    {list.items.map((item) => (
+                      <ListGroup.Item
+                        key={item.item_Id}
+                        className="bg-secondary text-dark bg-opacity-10 mb-2"
+                      >
+                        <h4 className="text-center">{item.itemName}</h4>
+                        <div className="row position-relative">
+                          <div className="col-4 text-center">
+                            <img
+                              src="https://bit.ly/3R0TRlE"
+                              className="img-fluid rounded"
+                              alt="..."
+                            />
+                          </div>
+                          <div className="col-4 my-auto text-center">
+                            <i className="bi bi-dash-circle fs-1"></i>
+                          </div>
+                          <div className="col-4 my-auto text-center">
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-success me-2"
+                              onClick={() => handleBought}
+                            >
+                              Bought
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-sm btn-danger"
+                              onClick={() => handleRemoveItemModal(list, item)}
+                            >
+                              Remove
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    </React.Fragment>
-                  ))}
-                </div>
-                <h2>sd</h2>
-              </Accordion.Body>
-            </Accordion.Item>
-          ))}
-      </Accordion>
+                      </ListGroup.Item>
+                    ))}
+                  </ListGroup>
+                </Accordion.Body>
+              </Accordion.Item>
+            ))}
+        </Accordion>
+      </div>
     </React.Fragment>
   );
 }

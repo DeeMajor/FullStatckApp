@@ -17,26 +17,26 @@ function useGetStationery() {
   return stationeryLists;
 }
 
+function useFetchStationery() {
+  return axios.get(`${url}`);
+}
+
 function usePostStationery(stationeryList) {
-  let exitCode = 1;
+  return axios.post(url, stationeryList);
+}
 
-  axios
-    .post(url, stationeryList)
-    .then((exitCode = exitCode - 1))
-    .catch((exitCode = exitCode - 1));
-
-  /*   if (request.data.statusCode === 200) {
-    exitCode = 1;
-  } */
-
-  return exitCode;
+function useUpdateStationery(stationeryList) {
+  return axios.put(url, stationeryList);
 }
 
 function useDeleteStationery(id) {
-  axios
-    .delete(`${url}/${id}`)
-    .then(() => console.log("Delete successful"))
-    .catch((error) => console.error(`Error: ${error}`));
+  return axios.delete(`${url}/${id}`);
 }
-/* export default usePostStationery; */
-export { useGetStationery, usePostStationery, useDeleteStationery };
+
+export {
+  useGetStationery,
+  usePostStationery,
+  useDeleteStationery,
+  useUpdateStationery,
+  useFetchStationery,
+};

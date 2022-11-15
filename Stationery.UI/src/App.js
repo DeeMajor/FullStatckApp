@@ -5,8 +5,12 @@ import "./App.css";
 import React, { useEffect, useState } from "react";
 import {
   useGetStationery,
+  useDeleteStationery,
   usePostStationery,
+  useUpdateStationery,
+  useFetchStationery,
 } from "./components/Repository/stationeryRepo";
+import { useDeleteListItem } from "./components/Repository/itemListRepo";
 import { useGetItems } from "./components/Repository/itemRepo";
 
 function App() {
@@ -16,6 +20,20 @@ function App() {
   const [stList, setstList] = useState();
   const [items, setItems] = useState();
   const [component, setComponent] = useState();
+
+  /*  const [postRes] = usePostStationery(); */
+  /*   const [result, setResult] = useState(); */
+  /*   const [listPost, setListPost] = useState();
+
+  const postRes = usePostStationery(listPost);
+  const [result, setResult] = useState(); */
+  /* 
+  useEffect(
+    (listPost) => {
+      setResult(postRes);
+    },
+    [postRes]
+  ); */
 
   useEffect(() => {
     setstList(staioneryList);
@@ -29,47 +47,54 @@ function App() {
     setComponent(StionaeryListComponent);
   }, [stList]);
 
-  const HandleStatCreate = (listName) => {
-    const newList = {
-      Child: listName,
-      Status: "Uncomplete",
-    };
-
-    let newId = null;
-
-    if (stList.length === 0) {
-      newId = 1;
-    } else {
-      newId = stList[stList.length - 1].id + 1;
+  const HandleDeleteStatItem = async (list, itemId) => {
+    try {
+      const resp = await useDeleteListItem(itemId);
+      return 0;
+    } catch (error) {
+      console.log(error);
+      return 1;
     }
-
-    const tempList = {
-      id: newId,
-      items: [],
-      child: listName,
-      status: "Uncomplete",
-    };
-
-    const response = usePostStationery(newList);
-
-    console.log("Test me", response);
-
-    if (response === 0) {
-      setstList([...stList, tempList]);
-
-      return response;
-    } else {
-      return response;
-    }
-
-    console.log(response);
   };
 
-  const handleStatUpdate = (stat) => {};
+  const HandleFetchList = async () => {
+    try {
+      const list = await useFetchStationery();
+      setstList(list.data.value);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  const handleStatDelete = (id) => {};
+  const PostList = async (list) => {
+    try {
+      const postRes = await usePostStationery(list);
 
-  const handleStatPost = (stat) => {};
+      return 0;
+    } catch (error) {
+      console.log("Error!!", error);
+      return 1;
+    }
+  };
+
+  const HandleStatUpdate = async (stat) => {
+    try {
+      const response = await useUpdateStationery(stat);
+      return 0;
+    } catch (error) {
+      console.log("Error!!", error);
+      return 1;
+    }
+  };
+
+  const HandleStatDelete = async (id) => {
+    try {
+      const resp = await useDeleteStationery(id);
+      return 0;
+    } catch (error) {
+      return 1;
+    }
+  };
 
   const handleItemCreate = (item) => {};
 
@@ -78,21 +103,26 @@ function App() {
   const handleItemDelete = (id) => {};
 
   const handleItemPost = (item) => {};
+  /* 
+  const Response = (list) => {
+    setResult(usePostStationery(list));
+  }; */
 
   const StionaeryListComponent = (
     <StationeryList
       List={stList}
       items={items}
-      Create={HandleStatCreate}
-      Update={handleStatUpdate}
-      Delete={handleStatDelete}
-      Post={handleStatPost}
+      PostList={PostList}
+      fetch={HandleFetchList}
+      Update={HandleStatUpdate}
+      Delete={HandleStatDelete}
+      DeleteStatItem={HandleDeleteStatItem}
     />
   );
 
   const ItemsComponent = (
     <Items
-      List={staioneryList}
+      List={stList}
       items={items}
       Create={handleItemCreate}
       Update={handleItemUpdate}

@@ -3,14 +3,25 @@ import { Modal, Button } from "react-bootstrap";
 
 function Error(props) {
   return (
-    <Modal show={props.show} onHide={() => props.onClose()}>
-      <Modal.Header closeButton>
-        <Modal.Title>ERROR</Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="bg-danger">
-        <p>Something went wrong, Please try again or contact admin.</p>
+    <Modal
+      show={props.show}
+      onHide={() => props.onClose()}
+      className="bg-dark bg-opacity-25"
+    >
+      <Modal.Header
+        className="bg-danger bg-opacity-25"
+        closeButton
+      ></Modal.Header>
+      <Modal.Body className="bg-danger bg-opacity-25 text-center">
+        {props.message}
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+        className="bg-danger bg-opacity-25"
+      >
         <Button variant="dark" onClick={() => props.onClose()}>
           Okay
         </Button>

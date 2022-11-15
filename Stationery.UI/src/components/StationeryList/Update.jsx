@@ -4,7 +4,7 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { useForm } from "react-hook-form";
 import React from "react";
 
-function CreateList(props) {
+function UpdateList(props) {
   const {
     register,
     handleSubmit,
@@ -13,30 +13,26 @@ function CreateList(props) {
   } = useForm();
 
   const onSubmit = (data) => {
-    const newList = {
-      Child: data.listName,
-      Status: "Uncomplete",
-    };
+    const list = props.list;
 
-    props.onCreate(newList);
+    list.child = data.listName;
+    list.items = [];
+
+    props.onUpdate(list);
   };
 
   return (
     <Modal show={props.show} onHide={() => props.onClose()}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Body className="">
-          <div className="">
-            <h6 className="fw-light text-center">Whos is it for?</h6>
-          </div>
-
           <FloatingLabel
             controlId="floatingInput"
-            label="Child's name"
+            label={props.list.child}
             className="my-3 "
           >
             <Form.Control
               type="text"
-              placeholder="Stationery List Name"
+              placeholder={props.list.child}
               {...register("listName")}
             />
           </FloatingLabel>
@@ -51,7 +47,7 @@ function CreateList(props) {
             cancel
           </Button>
           <Button variant="secondary" type="submit">
-            Create
+            Save
           </Button>
         </Modal.Footer>
       </form>
@@ -59,4 +55,4 @@ function CreateList(props) {
   );
 }
 
-export default CreateList;
+export default UpdateList;
