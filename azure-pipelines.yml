@@ -26,6 +26,11 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
+- task: VSTest@2
+  inputs:
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
@@ -34,11 +39,7 @@ steps:
     zipAfterPublish: True
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(PackageDropLocation)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: '$(Project)'
     publishLocation: 'Container'
 
-- task: VSTest@2
-  inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
