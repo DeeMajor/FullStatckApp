@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { itemsContext, statListsContext } from "../../App";
 import AlertDismissible from "../StationeryList/Error";
 import Success from "../StationeryList/success";
+import Error from "../StationeryList/Error";
 import AddItem from "../StationeryList/AddItem";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
@@ -56,16 +57,22 @@ function Items(props) {
     const err = usePostListItem(newListItem);
 
     if (err !== 1) {
+      const message = "Added to list successfully";
       setAddModal(
         <Success
           show={true}
+          message={message}
           item={item}
           list={list}
           onClose={handleCloseModal}
         />
       );
     } else {
-      setAddModal(<AlertDismissible show={true} onClose={handleCloseModal} />);
+      const message =
+        "Item could not be added to list. Please try again or contact admin if issue persists.";
+      setAddModal(
+        <Error show={true} message={message} onClose={handleCloseModal} />
+      );
     }
   };
 

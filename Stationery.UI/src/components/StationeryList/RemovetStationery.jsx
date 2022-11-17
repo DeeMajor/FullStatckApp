@@ -13,6 +13,12 @@ function RemoveStationery(props) {
           </span>
           ?
         </p>
+        <p>
+          <b>
+            <u>NB</u>:{" "}
+          </b>
+          All items in this list will be removed as well.
+        </p>
         <div className="">
           <Button
             className="me-2 btn-sm"
