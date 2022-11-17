@@ -32,10 +32,11 @@ steps:
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
-- task: PublishPipelineArtifact@1
+- task: PublishBuildArtifacts@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'myWebsiteName'
+    PathtoPublish: '$(PackageDropLocation)'
+    ArtifactName: '$(Project)'
+    publishLocation: 'Container'
 
 - task: VSTest@2
   inputs:
