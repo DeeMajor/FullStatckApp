@@ -20,16 +20,22 @@ steps:
     feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
+  displayName: Build
   inputs:
-    command: 'build'
-    publishWebProjects: true
+    command: build
+    projects: '**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
 
- 
-- task: PublishBuildArtifacts@1
+- task: DotNetCoreCLI@2
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'myWebsiteName'
 
 - task: VSTest@2
   inputs:
