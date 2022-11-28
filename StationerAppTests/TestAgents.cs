@@ -91,7 +91,7 @@ namespace StationerAppTests
                     ItemDescription = $"Description",
                     ItemPrice = x,
                     ItemStore = $"Store",
-                    FK_StationeryList_Id = x,
+                    //FK_StationeryList_Id = x,
                     Bought = true,
                     Quantity = x,
                     Unit = "Kg"

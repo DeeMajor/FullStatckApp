@@ -9,76 +9,66 @@ using System.Data.SqlClient;
 
 namespace Stationery.Api.Repository.Repositories
 {
-    public class StationeryRepository : IStationeryService
+    public class ItemListRepository : IItemListService
     {
         private readonly Connection _connecta;
         private readonly IExceptionHandling _exceptionHandling;
         private readonly IMapper _dapperWrapper;
 
-        public StationeryRepository(IOptions<Connection> connecta, IExceptionHandling exceptionHandling, IMapper dapperWrapper)
+        public ItemListRepository(IOptions<Connection> connecta, IExceptionHandling exceptionHandling, IMapper dapperWrapper)
         {
             _connecta = connecta.Value;
             _exceptionHandling = exceptionHandling;
             _dapperWrapper = dapperWrapper;
         }
 
-
-        public async Task<int> DeleteStationery(int id)
+        public async Task<int> DeleteItemList(int id)
         {
             using (IDbConnection connection = new SqlConnection(_connecta.ConnectionString))
             {
-                var sql = $"{StoredProcedure.SPStationeryDelete} {id}";
+                var sql = $"{StoredProcedure.SPItemListDelete} {id}";
                 var rowsAffected = await _dapperWrapper.ExecuteDeleteAsync(connection, sql);
 
                 return _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
 
-        public async Task<List<StationeryList>> GetAllStationery()
+        public async Task<List<ItemList>> GetAllItemLists()
         {
             using (IDbConnection connection = new SqlConnection(_connecta.ConnectionString))
             {
-                var stationery = await _dapperWrapper.QueryAsync<StationeryList>(connection, StoredProcedure.SPStationeryGetAll);
+                var itemLists = await _dapperWrapper.QueryAsync<ItemList>(connection, StoredProcedure.SPItemListGetAll);
 
-                foreach (StationeryList stat in stationery)
-                {
-                    var ItemsSql = $"{StoredProcedure.SPItemListGetById} {stat.Id}";
-                    var items = await _dapperWrapper.QueryAsync<Item>(connection, ItemsSql);
-                    stat.Items = items;
-                }
-
-                return stationery.ToList();
+                return itemLists.ToList();
             }
         }
 
-        public async Task<StationeryList> GetStationery(int id)
+        public async Task<List<Item>> GetItemList(int id)
         {
             using (IDbConnection connection = new SqlConnection(_connecta.ConnectionString))
             {
                 var sql = $"{StoredProcedure.SPItemListGetById} {id}";
-                var multiQueries = await _dapperWrapper.QueryMultipleAsync(connection, sql);
-                var stationery = multiQueries.Read<StationeryList>().First();
-                stationery.Items = multiQueries.Read<Item>().ToList();
+                var itemList = await _dapperWrapper.QueryAsync<Item>(connection, sql);
 
-                return stationery;
+                return itemList;
             }
         }
 
-        public async Task<int> InsertStationery(StationeryList stationery)
+        public async Task<int> InsertItemList(ItemList itemList)
         {
             using (IDbConnection connection = new SqlConnection(_connecta.ConnectionString))
             {
-                var rowsAffected = await _dapperWrapper.ExecuteInsertAsync(connection, StoredProcedure.SPStationeryCreate, stationery);
+                var rowsAffected = await _dapperWrapper.ExecuteInsertAsync(connection, StoredProcedure.SPItemListCreate, itemList);
 
                 return _exceptionHandling.CheckForNull(rowsAffected);
             }
         }
 
-        public async Task<int> UpdateStationery(StationeryList stationery)
+        public async Task<int> UpdateItemList(ItemList itemList)
         {
             using (IDbConnection connection = new SqlConnection(_connecta.ConnectionString))
             {
-                var rowsAffected = await _dapperWrapper.ExecuteUpdateAsync(connection, StoredProcedure.SPStationeryUpdate, stationery);
+                var rowsAffected = await _dapperWrapper.ExecuteUpdateAsync(connection, StoredProcedure.SPItemListUpdate, itemList);
 
                 return _exceptionHandling.CheckForNull(rowsAffected);
             }

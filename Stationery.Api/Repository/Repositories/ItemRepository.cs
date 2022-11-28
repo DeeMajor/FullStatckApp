@@ -7,7 +7,7 @@ using Stationery.Application.Services;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Stationery.Infrastructure.Repositories
+namespace Stationery.Api.Repository.Repositories
 {
     public class ItemRepository : IItemsService
     {
