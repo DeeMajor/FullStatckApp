@@ -165,52 +165,10 @@ function StationeryList(props) {
     }
   }
 
-  const unBought = (
-    <div>
-      <div className="col-4 my-auto text-center">
-        <i className="bi bi-dash-circle fs-1"></i>
-      </div>
-      <div className="col-4 my-auto text-center">
-        <button
-          type="button"
-          className="btn btn-sm btn-success me-2"
-          onClick={() => GetListItem(list, item)}
-        >
-          Bought
-        </button>
-        <button
-          type="button"
-          className="btn btn-sm btn-danger"
-          onClick={() => handleRemoveItemModal(list, item)}
-        >
-          Remove
-        </button>
-      </div>
-    </div>
-  );
+  const unBought = <i className="bi bi-dash-circle fs-1"></i>;
   const Bought = (
-    <div>
-      <div className="col-4 my-auto text-center">
-        <div className="text-success">
-          <i className="bi bi-check-circle-fill fs-1"></i>
-        </div>
-      </div>
-      <div className="col-4 my-auto text-center">
-        <button
-          type="button"
-          className="btn btn-sm btn-success me-2"
-          onClick={() => GetListItem(list, item)}
-        >
-          Bought
-        </button>
-        <button
-          type="button"
-          className="btn btn-sm btn-danger"
-          onClick={() => handleRemoveItemModal(list, item)}
-        >
-          Remove
-        </button>
-      </div>
+    <div className="text-success">
+      <i className="bi bi-check-circle-fill fs-1"></i>
     </div>
   );
 
@@ -265,7 +223,6 @@ function StationeryList(props) {
                               alt="..."
                             />
                           </div>
-                          {checkIfBought(item.bought)}
                           <div className="col-4 my-auto text-center">
                             {checkIfBought(item.bought)}
                           </div>
