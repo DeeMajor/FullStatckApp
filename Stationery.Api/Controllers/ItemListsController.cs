@@ -41,7 +41,7 @@ namespace Stationery.Api.Controllers
         }
 
         // PUT api/<ItemListsController>/5
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IResult> Put([FromBody] ItemList itemList)
         {
             await _itemListAgent.UpdateItemList(itemList);

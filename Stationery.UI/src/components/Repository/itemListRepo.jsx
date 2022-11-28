@@ -16,21 +16,20 @@ function useGetItemLists(id) {
   return items;
 }
 
-function useGetAllItemLists() {
-  const [items, setItems] = useState([]);
+function useFetchItemList(id) {
+  return axios.get(`${url}${id}`);
+}
 
-  useEffect(() => {
-    async function fetchData() {
-      const request = await axios.get(`${url}`);
-      setItems(request.data.value);
-    }
-    fetchData();
-  }, []);
-  return items;
+function useGetAllItemLists() {
+  return axios.get(`${url}`);
 }
 
 function useDeleteListItem(id) {
   return axios.delete(`${url}${id}`);
+}
+
+function useUpdateListeItem(itemList) {
+  return axios.put(url, itemList);
 }
 
 function usePostListItem(itemList) {
@@ -51,7 +50,9 @@ function usePostListItem(itemList) {
 
 export {
   useGetItemLists,
+  useFetchItemList,
   useDeleteListItem,
   usePostListItem,
   useGetAllItemLists,
+  useUpdateListeItem,
 };

@@ -10,7 +10,11 @@ import {
   useUpdateStationery,
   useFetchStationery,
 } from "./components/Repository/stationeryRepo";
-import { useDeleteListItem } from "./components/Repository/itemListRepo";
+import {
+  useDeleteListItem,
+  useGetAllItemLists,
+  useUpdateListeItem,
+} from "./components/Repository/itemListRepo";
 import { useGetItems } from "./components/Repository/itemRepo";
 
 function App() {
@@ -96,6 +100,29 @@ function App() {
     }
   };
 
+  const FetchItems = async (list, item) => {
+    try {
+      const itemLists = await useGetAllItemLists();
+
+      return itemLists.data.value;
+
+      /* const itemListToUpdate = itemLists.filter(list.) */
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const MakeBought = async (itemList) => {
+    console.log(itemList);
+
+    try {
+      const resp = await useUpdateListeItem(itemList);
+      return 0;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleItemCreate = (item) => {};
 
   const handleItemUpdate = (item) => {};
@@ -114,6 +141,8 @@ function App() {
       items={items}
       PostList={PostList}
       fetch={HandleFetchList}
+      GetListItem={FetchItems}
+      MakeBought={MakeBought}
       Update={HandleStatUpdate}
       Delete={HandleStatDelete}
       DeleteStatItem={HandleDeleteStatItem}

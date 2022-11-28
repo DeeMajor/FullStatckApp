@@ -87,7 +87,31 @@ function StationeryList(props) {
       );
     }
   };
-  const handleBought = async (list, item) => {};
+
+  const GetListItem = async (list, item) => {
+    let resp = await props.GetListItem();
+    const itemList = resp.find(
+      (itemList) =>
+        itemList.fK_ItemId_Id === item.item_Id &&
+        itemList.fK_StationeryList_Id === list.id
+    );
+    itemList.bought = true;
+    resp = await props.MakeBought(itemList);
+
+    if (resp !== 1) {
+      await props.fetch();
+      const message = "item updated";
+      setModal(
+        <Success show={true} onClose={handleCloseModal} message={message} />
+      );
+    } else {
+      const message =
+        "Item could not be Updated. Please try again or contact admin if issue persists.";
+      setModal(
+        <Error show={true} message={message} onClose={handleCloseModal} />
+      );
+    }
+  };
 
   const handleRemoveItemModal = async (list, item) => {
     setModal(
@@ -131,6 +155,64 @@ function StationeryList(props) {
       />
     );
   };
+
+  function checkIfBought(bought) {
+    console.log(bought);
+    if (bought) {
+      return Bought;
+    } else {
+      return unBought;
+    }
+  }
+
+  const unBought = (
+    <div>
+      <div className="col-4 my-auto text-center">
+        <i className="bi bi-dash-circle fs-1"></i>
+      </div>
+      <div className="col-4 my-auto text-center">
+        <button
+          type="button"
+          className="btn btn-sm btn-success me-2"
+          onClick={() => GetListItem(list, item)}
+        >
+          Bought
+        </button>
+        <button
+          type="button"
+          className="btn btn-sm btn-danger"
+          onClick={() => handleRemoveItemModal(list, item)}
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+  );
+  const Bought = (
+    <div>
+      <div className="col-4 my-auto text-center">
+        <div className="text-success">
+          <i className="bi bi-check-circle-fill fs-1"></i>
+        </div>
+      </div>
+      <div className="col-4 my-auto text-center">
+        <button
+          type="button"
+          className="btn btn-sm btn-success me-2"
+          onClick={() => GetListItem(list, item)}
+        >
+          Bought
+        </button>
+        <button
+          type="button"
+          className="btn btn-sm btn-danger"
+          onClick={() => handleRemoveItemModal(list, item)}
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+  );
 
   return (
     <React.Fragment>
@@ -183,14 +265,15 @@ function StationeryList(props) {
                               alt="..."
                             />
                           </div>
+                          {checkIfBought(item.bought)}
                           <div className="col-4 my-auto text-center">
-                            <i className="bi bi-dash-circle fs-1"></i>
+                            {checkIfBought(item.bought)}
                           </div>
                           <div className="col-4 my-auto text-center">
                             <button
                               type="button"
                               className="btn btn-sm btn-success me-2"
-                              onClick={() => handleBought}
+                              onClick={() => GetListItem(list, item)}
                             >
                               Bought
                             </button>
