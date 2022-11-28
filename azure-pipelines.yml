@@ -34,6 +34,25 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'Stationery.UI'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: 'Stationery.UI'
+    customCommand: 'run build'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: 'Stationery.UI/build'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/mystationeryui.zip'
+    replaceExistingArchive: true
+
 - task: DotNetCoreCLI@2
   displayName: PublishProject
   inputs:
