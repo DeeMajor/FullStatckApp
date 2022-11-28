@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const url = "https://localhost:7088/api/Items";
+const url = "https://mystationery.azurewebsites.net/api/Items";
 
 function useGetItems(props) {
   const [items, setItems] = useState([]);

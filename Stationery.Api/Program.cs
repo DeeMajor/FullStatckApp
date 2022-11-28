@@ -15,7 +15,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("MyAllowedOrigins",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000") // note the port is included 
+            policy.WithOrigins("https://mystationerui.azurewebsites.net/") // note the port is included 
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });

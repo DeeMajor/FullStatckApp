@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const url = "https://localhost:7088/api/ItemLists/";
+const url = "https://mystationery.azurewebsites.net/api/ItemLists/";
 
 function useGetItemLists(id) {
   const [items, setItems] = useState([]);
