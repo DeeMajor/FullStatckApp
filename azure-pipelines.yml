@@ -45,13 +45,11 @@ steps:
     workingDir: 'Stationery.UI'
     customCommand: 'run build'
 
-- task: ArchiveFiles@2
+- task: CopyFiles@2
   inputs:
-    rootFolderOrFile: 'Stationery.UI/build'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/mystationeryui.zip'
-    replaceExistingArchive: true
+    SourceFolder: 'Stationery.UI/build'
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/mystationeryui'
 
 - task: DotNetCoreCLI@2
   displayName: PublishProject
