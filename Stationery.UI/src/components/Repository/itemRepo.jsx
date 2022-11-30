@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const url = "https://mystationery.azurewebsites.net/api/Items";
+const url = "https://fsaui.azurewebsites.net/api/Items";
 
 function useGetItems(props) {
   const [items, setItems] = useState([]);
@@ -16,4 +16,7 @@ function useGetItems(props) {
   return items;
 }
 
-export { useGetItems };
+function useFetchItems() {
+  return axios.get(`${url}`);
+}
+export { useGetItems, useFetchItems };

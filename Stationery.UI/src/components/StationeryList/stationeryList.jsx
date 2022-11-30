@@ -113,6 +113,31 @@ function StationeryList(props) {
     }
   };
 
+  const NotAcquired = async (list, item) => {
+    let resp = await props.GetListItem();
+    const itemList = resp.find(
+      (itemList) =>
+        itemList.fK_ItemId_Id === item.item_Id &&
+        itemList.fK_StationeryList_Id === list.id
+    );
+    itemList.bought = false;
+    resp = await props.MakeBought(itemList);
+
+    if (resp !== 1) {
+      await props.fetch();
+      const message = "item updated";
+      setModal(
+        <Success show={true} onClose={handleCloseModal} message={message} />
+      );
+    } else {
+      const message =
+        "Item could not be Updated. Please try again or contact admin if issue persists.";
+      setModal(
+        <Error show={true} message={message} onClose={handleCloseModal} />
+      );
+    }
+  };
+
   const handleRemoveItemModal = async (list, item) => {
     setModal(
       <RemoveItem
@@ -157,7 +182,6 @@ function StationeryList(props) {
   };
 
   function checkIfBought(bought) {
-    console.log(bought);
     if (bought) {
       return Bought;
     } else {
@@ -165,18 +189,68 @@ function StationeryList(props) {
     }
   }
 
-  const unBought = <i className="bi bi-dash-circle fs-1"></i>;
+  function checkIfBoughtButton(bought, list, item) {
+    if (!bought) {
+      return (
+        <button
+          type="button"
+          className="btn btn-link"
+          onClick={() => GetListItem(list, item)}
+        >
+          BOUGHT
+        </button>
+      );
+    } else {
+      return (
+        <button
+          type="button"
+          className="btn btn-link"
+          onClick={() => NotAcquired(list, item)}
+        >
+          Don't have
+        </button>
+      );
+    }
+  }
+
+  const unBought = (
+    <div className="mb-5">
+      <i className="bi bi-dash-circle fs-1"></i>
+    </div>
+  );
   const Bought = (
-    <div className="text-success">
+    <div className="text-success mb-5">
       <i className="bi bi-check-circle-fill fs-1"></i>
     </div>
   );
+
+  const noItems = (
+    <div className="text-center">
+      There are no items in this list.
+      <button
+        type="button"
+        class="btn btn-link"
+        onClick={() => props.onPage("items")}
+      >
+        Add items.
+      </button>
+    </div>
+  );
+
+  const noLists = <div className="text-center mb-2">You have no Lists.</div>;
+
+  const checkforItems = (listItems) => {
+    if (listItems.length === 0) {
+      return noItems;
+    }
+  };
 
   return (
     <React.Fragment>
       <div className="">
         <div className="text-center mb-3">
           <h2>STATIONERY LIST</h2>
+          {props.List == 0 && noLists}
           <a
             className="mx-auto my-auto btn btn-secondary"
             role="button"
@@ -209,6 +283,7 @@ function StationeryList(props) {
 
                 <Accordion.Body>
                   <ListGroup variant="flush">
+                    {checkforItems(list.items)}
                     {list.items.map((item) => (
                       <ListGroup.Item
                         key={item.item_Id}
@@ -216,33 +291,31 @@ function StationeryList(props) {
                       >
                         <h4 className="text-center">{item.itemName}</h4>
                         <div className="row position-relative">
-                          <div className="col-4 text-center">
+                          <div className="col-6 text-center">
                             <img
                               src="https://bit.ly/3R0TRlE"
                               className="img-fluid rounded"
                               alt="..."
                             />
                           </div>
-                          <div className="col-4 my-auto text-center">
+                          <div className="col-6 my-auto text-center">
+                            <h6 className="text-center">status</h6>
                             {checkIfBought(item.bought)}
-                          </div>
-                          <div className="col-4 my-auto text-center">
+                            <div>
+                              mark as...
+                              {checkIfBoughtButton(item.bought, list, item)}
+                            </div>
+
                             <button
                               type="button"
-                              className="btn btn-sm btn-success me-2"
-                              onClick={() => GetListItem(list, item)}
-                            >
-                              Bought
-                            </button>
-                            <button
-                              type="button"
-                              className="btn btn-sm btn-danger"
+                              className="btn btn-danger"
                               onClick={() => handleRemoveItemModal(list, item)}
                             >
                               Remove
                             </button>
                           </div>
                         </div>
+                        <div className="row my-auto text-center me-2"></div>
                       </ListGroup.Item>
                     ))}
                   </ListGroup>

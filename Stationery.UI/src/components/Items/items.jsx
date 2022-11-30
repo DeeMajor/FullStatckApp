@@ -5,25 +5,19 @@ import Success from "../StationeryList/success";
 import Error from "../StationeryList/Error";
 import AddItem from "../StationeryList/AddItem";
 import Dropdown from "react-bootstrap/Dropdown";
-import {
-  usePostListItem,
-  useGetItemLists,
-  useGetAllItemLists,
-} from "../Repository/itemListRepo";
 
 function Items(props) {
   //context
 
   //states
-  const [stationeryList, setStat] = useState();
   const [modal, setModal] = useState();
   const [addItemModal, setAddModal] = useState();
   const [isActive, setActive] = useState();
-  const [allListItems, setItemLists] = useState();
 
   //functions
-  const handleCloseModal = () => {
+  const handleCloseModal = async () => {
     setModal();
+
     setAddModal();
   };
 
@@ -32,31 +26,28 @@ function Items(props) {
   };
 
   const ShowLists = (itemId) => {
-    console.log(props.List);
-    const itemList = props.List.filter((l) => l.fK_ItemId_Id === itemId);
-    const statIds = [];
-    let list = props.List;
-
-    itemList.forEach((list) => {
-      statIds.push(list.fK_StationeryList_Id);
+    /* const itemList = props.List.filter((l) => l.items.item_Id === itemId); */
+    let rangeList = [];
+    props.List.forEach((list) => {
+      if (list.items.filter((item) => item.item_Id === itemId).length !== 0) {
+      } else {
+        rangeList.push(list);
+      }
     });
 
-    statIds.forEach((statid) => {
-      list = list.filter((l) => l.id !== statid);
-    });
-
-    return list;
+    return rangeList;
   };
 
-  const HandleAddItem = (Listid, itemId, list, item) => {
+  const HandleAddItem = async (Listid, itemId, list, item) => {
     const newListItem = {
       fK_ItemId_Id: itemId,
       fK_StationeryList_Id: Listid,
     };
 
-    const err = usePostListItem(newListItem);
+    const err = await props.AddItemToList(newListItem);
 
     if (err !== 1) {
+      await props.FetchItems();
       const message = "Added to list successfully";
       setAddModal(
         <Success
@@ -123,16 +114,6 @@ function Items(props) {
                             </h6>
                           </Dropdown.Item>
                         ))}
-                        <hr />
-                        {/* <div onClick={() => handleModal(item, stationeryList)}>
-                          <i
-                            className="ms-2 me-1 bi bi-plus-circle-fill link-dark "
-                            role="button"
-                          ></i>
-                          <button className="link-dark bg-white border border-0">
-                            <u>Create list</u>
-                          </button>
-                        </div> */}
                       </Dropdown.Menu>
                     </Dropdown>
                   </h3>

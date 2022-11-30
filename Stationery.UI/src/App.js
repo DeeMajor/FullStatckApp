@@ -14,8 +14,9 @@ import {
   useDeleteListItem,
   useGetAllItemLists,
   useUpdateListeItem,
+  usePostListItem,
 } from "./components/Repository/itemListRepo";
-import { useGetItems } from "./components/Repository/itemRepo";
+import { useGetItems, useFetchItems } from "./components/Repository/itemRepo";
 
 function App() {
   const staioneryList = useGetStationery();
@@ -23,21 +24,8 @@ function App() {
 
   const [stList, setstList] = useState();
   const [items, setItems] = useState();
-  const [component, setComponent] = useState();
-
-  /*  const [postRes] = usePostStationery(); */
-  /*   const [result, setResult] = useState(); */
-  /*   const [listPost, setListPost] = useState();
-
-  const postRes = usePostStationery(listPost);
-  const [result, setResult] = useState(); */
-  /* 
-  useEffect(
-    (listPost) => {
-      setResult(postRes);
-    },
-    [postRes]
-  ); */
+  const [component, setComponent] = useState("start");
+  const [eventLink, setEventLink] = useState("1");
 
   useEffect(() => {
     setstList(staioneryList);
@@ -48,7 +36,11 @@ function App() {
   }, [itemsData]);
 
   useEffect(() => {
-    setComponent(StionaeryListComponent);
+    if (eventLink === "1") {
+      setComponent(StionaeryListComponent);
+    } else {
+      setComponent(ItemsComponent);
+    }
   }, [stList]);
 
   const HandleDeleteStatItem = async (list, itemId) => {
@@ -61,7 +53,7 @@ function App() {
     }
   };
 
-  const HandleFetchList = async () => {
+  const HandleFetchList = async (comp) => {
     try {
       const list = await useFetchStationery();
       setstList(list.data.value);
@@ -105,27 +97,42 @@ function App() {
       const itemLists = await useGetAllItemLists();
 
       return itemLists.data.value;
-
-      /* const itemListToUpdate = itemLists.filter(list.) */
     } catch (error) {
       console.log(error);
     }
   };
 
   const MakeBought = async (itemList) => {
-    console.log(itemList);
-
     try {
       const resp = await useUpdateListeItem(itemList);
       return 0;
     } catch (error) {
       console.log(error);
+      return 1;
     }
   };
 
-  const handleItemCreate = (item) => {};
+  const HandleAddItemToList = async (item) => {
+    try {
+      const resp = await usePostListItem(item);
+      HandleFetchList();
+      return 0;
+    } catch (error) {
+      console.log(error);
+      return 1;
+    }
+  };
 
-  const handleItemUpdate = (item) => {};
+  const HandleFetchItems = async () => {
+    try {
+      const resp = await useFetchItems();
+      setItems(resp.data.value);
+      return 0;
+    } catch (error) {
+      console.log(error);
+      return 1;
+    }
+  };
 
   const handleItemDelete = (id) => {};
 
@@ -134,6 +141,16 @@ function App() {
   const Response = (list) => {
     setResult(usePostStationery(list));
   }; */
+
+  const HandleLink = (component) => {
+    if (component === "items") {
+      setEventLink("2");
+      setComponent(ItemsComponent);
+    } else if (component === "Stationery") {
+      setEventLink("1");
+      setComponent(StionaeryListComponent);
+    }
+  };
 
   const StionaeryListComponent = (
     <StationeryList
@@ -146,6 +163,7 @@ function App() {
       Update={HandleStatUpdate}
       Delete={HandleStatDelete}
       DeleteStatItem={HandleDeleteStatItem}
+      onPage={HandleLink}
     />
   );
 
@@ -153,25 +171,27 @@ function App() {
     <Items
       List={stList}
       items={items}
-      Create={handleItemCreate}
-      Update={handleItemUpdate}
+      AddItemToList={HandleAddItemToList}
+      fetch={HandleFetchList}
+      /* Create={handleItemCreate} */
+      /* Update={handleItemUpdate} */
       Delete={handleItemDelete}
       Post={handleItemPost}
+      onPage={HandleLink}
+      FetchItems={HandleFetchItems}
     />
   );
 
-  const HandleLink = (component) => {
-    if (component === "items") {
-      setComponent(ItemsComponent);
-    } else if (component === "Stationery") {
-      setComponent(StionaeryListComponent);
-    }
-  };
-
   return (
     <React.Fragment>
-      <NavBar onPage={HandleLink} />
-      <div className="container">{component}</div>
+      <NavBar active={eventLink} onPage={HandleLink} />
+      <div className="row">
+        <div className="col-lg-2"></div>
+        <div className="col-lg-8">
+          <div>{component}</div>
+        </div>
+        <div className="col-lg-2"></div>
+      </div>
     </React.Fragment>
   );
 }

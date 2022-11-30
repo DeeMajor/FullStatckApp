@@ -11,31 +11,23 @@ function NavBar(props) {
         </a>
 
         <div className="nav-item" role="search">
-          <form role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-          </form>
+          {/* <h1>MY-STATIONERY</h1> */}
         </div>
 
         <div className="d-flex flex-row-reverse">
           <div className="p-2">
-            <Nav fill variant="pills" defaultActiveKey="/List">
+            <Nav fill variant="pills" activeKey={props.eventlink}>
               <Nav.Item>
                 <Nav.Link
-                  href="/List"
+                  className={props.active !== "2" && "active"}
                   onClick={() => props.onPage("Stationery")}
                 >
-                  {" "}
                   Lists
                 </Nav.Link>
               </Nav.Item>
               <Nav.Item>
                 <Nav.Link
-                  eventKey="link-2"
+                  className={props.active !== "1" && "active"}
                   onClick={() => props.onPage("items")}
                 >
                   Items
