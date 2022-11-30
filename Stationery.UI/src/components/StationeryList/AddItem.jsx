@@ -11,8 +11,7 @@ function AddItem(props) {
           <span className="text-danger fw-bold">
             <u>{props.item.itemName}</u>
           </span>{" "}
-          To <span className="fw-bold">{props.list.child}</span> successfully
-          ...
+          To <span className="fw-bold">{props.list.child}</span>successfully ...
         </p>
         <div className="">
           <Button
