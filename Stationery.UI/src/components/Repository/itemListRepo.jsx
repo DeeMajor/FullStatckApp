@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const url = "https://mystationery.azurewebsites.net/api/ItemLists/";
+const url = "https://fsaui.azurewebsites.net/api/ItemLists/";
 
 function useGetItemLists(id) {
   const [items, setItems] = useState([]);
@@ -33,19 +33,7 @@ function useUpdateListeItem(itemList) {
 }
 
 function usePostListItem(itemList) {
-  console.log(itemList);
-  let error = 0;
-
-  async function Post() {
-    try {
-      const request = await axios.post(url, itemList);
-    } catch (error) {
-      error = 1;
-    }
-  }
-  Post();
-
-  return error;
+  return axios.post(url, itemList);
 }
 
 export {
