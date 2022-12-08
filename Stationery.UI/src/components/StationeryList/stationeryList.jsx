@@ -129,6 +129,7 @@ function StationeryList(props) {
   };
 
   const NotAcquired = async (list, item) => {
+    setIsLoading(true);
     let resp = await props.GetListItem();
     const itemList = resp.find(
       (itemList) =>
@@ -140,6 +141,7 @@ function StationeryList(props) {
 
     if (resp !== 1) {
       await props.fetch();
+      setIsLoading(false);
       const message = "item updated";
       setModal(
         <Success show={true} onClose={handleCloseModal} message={message} />
@@ -152,6 +154,8 @@ function StationeryList(props) {
       );
     }
   };
+
+  function Progress() {}
 
   const handleRemoveItemModal = async (list, item) => {
     setModal(
@@ -215,6 +219,26 @@ function StationeryList(props) {
       );
     }
   }
+
+  /*   function Progress(list) {
+
+    
+      if (list.items === true) {
+        complete = <img src={Tick} alt="tick" width="150" />;
+      }
+    
+    list.items.forEach((item) => {
+
+      let complete = "";
+      if (item.bought === true) {
+
+        complete = <img src={Tick} alt="tick" width="150" />;
+      }
+      else {
+        complete = <img src={Tick} alt="tick" width="150" />;
+      }
+    });
+  } */
 
   function checkIfBoughtButton(bought, list, item) {
     if (!bought) {
@@ -323,6 +347,7 @@ function StationeryList(props) {
                       {" "}
                       {""}Total Estimate: <b>R{calcTotalEstimate(list)}</b>
                     </span>
+                    {/*  <img src={Tick} alt="tick" width="150" /> */}
                     <Accordion.Header className="float-end">
                       {/* <span>{Uncomplete} </span> */}
                     </Accordion.Header>
