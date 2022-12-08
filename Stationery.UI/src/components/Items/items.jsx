@@ -96,6 +96,7 @@ function Items(props) {
         <LoadingSpinner />
       ) : (
         <React.Fragment>
+          <h4 className="text-center mb-5">All Items</h4>
           {props.items !== undefined && (
             <div className="row gy-5 gx-5">
               {props.items.map((item) => (
@@ -117,37 +118,10 @@ function Items(props) {
                             showListModal(ShowLists(item.item_Id), item)
                           }
                         ></i>
-                        {/* <Dropdown className="float-end me-2 mt-1  ">
-                      <Dropdown.Toggle as={"a"} id="dropdown-basic">
-                        <i
-                          className="bi bi-plus-circle-fill text-success"
-                          role="button"
-                          onClick={() => setActive(item.item_Id)}
-                        ></i>
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        <h6 className="dropdown-header">
-                          {" "}
-                          Save {item.itemName} to...
-                        </h6>
-                        <hr />
-                        {ShowLists(item.item_Id).map((list) => (
-                          <Dropdown.Item key={list.id}>
-                            <h6
-                              onClick={() =>
-                                HandleAddItem(list.id, item.item_Id, list, item)
-                              }
-                            >
-                              {list.child}
-                            </h6>
-                          </Dropdown.Item>
-                        ))}
-                      </Dropdown.Menu>
-                    </Dropdown> */}
                       </h6>
 
                       <img
-                        src="https://bit.ly/3R0TRlE"
+                        src={item.pictureUrl}
                         className="card-img-top mx-auto d-block"
                         alt="..."
                       />

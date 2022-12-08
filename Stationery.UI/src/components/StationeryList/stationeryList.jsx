@@ -9,6 +9,9 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Update from "./Update";
 import LoadingSpinner from "../Assets/LoadSpinner";
 import Tick from "../../images/tick.png";
+import Incomplete from "../../images/incomplete.png"
+import Complete from "../../images/complete.png"
+
 
 function StationeryList(props) {
   const [modal, setModal] = useState();
@@ -129,6 +132,7 @@ function StationeryList(props) {
   };
 
   const NotAcquired = async (list, item) => {
+    setIsLoading(true);
     let resp = await props.GetListItem();
     const itemList = resp.find(
       (itemList) =>
@@ -140,6 +144,7 @@ function StationeryList(props) {
 
     if (resp !== 1) {
       await props.fetch();
+      setIsLoading(false);
       const message = "item updated";
       setModal(
         <Success show={true} onClose={handleCloseModal} message={message} />
@@ -152,6 +157,8 @@ function StationeryList(props) {
       );
     }
   };
+
+  function Progress() {}
 
   const handleRemoveItemModal = async (list, item) => {
     setModal(
@@ -216,7 +223,23 @@ function StationeryList(props) {
     }
   }
 
+    function Progress(list) {
+
+    let progress= "";
+    let progressLength = list.items.filter(item => item.bought === true).length;
+    console.log(list)
+      if (progressLength === list.items.length && list.items.length >0) {
+        
+        progress = <img src={Complete} alt="complete" width="30" height="30" />;
+      }else{
+        progress = <img src={Incomplete} alt="incomplete" width="30" />;
+      }
+    
+      return progress;
+  }
+
   function checkIfBoughtButton(bought, list, item) {
+    console.log(item)
     if (!bought) {
       return (
         <button
@@ -263,7 +286,10 @@ function StationeryList(props) {
       </button>
     </div>
   );
-
+  
+  const itemPrice = () =>{
+    
+  }
   const noLists = <div className="text-center mb-2">You have no Lists.</div>;
 
   const checkforItems = (listItems) => {
@@ -323,6 +349,8 @@ function StationeryList(props) {
                       {" "}
                       {""}Total Estimate: <b>R{calcTotalEstimate(list)}</b>
                     </span>
+                    <span className=" mt-3">{Progress(list)}</span>
+                    
                     <Accordion.Header className="float-end">
                       {/* <span>{Uncomplete} </span> */}
                     </Accordion.Header>
@@ -337,36 +365,51 @@ function StationeryList(props) {
                           className=" text-dark bg-opacity-10 mb-2"
                         >
                           <h4 className="text-center">
-                            {item.itemName}{" "}
-                            <span className="fs-6">
-                              (X{item.quantity}){" "}
+                            {item.itemName}
+                           
+                          </h4>
+                          <div className="row position-relative">
+                            <div className="col-7 text-center card">
+                              <img
+                                src={item.pictureUrl}
+                                className="img-fluid rounded card-img-top"
+                                alt="..."
+                              />
+                              {checkIfBoughtTick(item.bought)}
+                            </div>
+                            <div className="col-5 my-auto fs-6 ">
+                            <span className="text-primary fs-3 d-flex justify-content-center">R{item.itemPrice}<span className="fs-6 text-dark">(X{item.quantity}){" "}</span></span>
+                            <p className="d-flex justify-content-center">{item.itemDescription}</p>
+                            <div className="d-flex justify-content-center">{checkIfBoughtButton(item.bought, list, item)}
+                            <button
+                                type="button"
+                                className="btn btn-sm btn-danger ms-2"
+                                onClick={() =>
+                                  handleRemoveItemModal(list, item)
+                                }
+                              >
+                                Remove
+                              </button></div>
+                            
+                            </div>
+                            
+                            {/* <div className="col-6 d-flex my-auto text-center">
+                            
+                            <p >{item.itemDescription}</p>
+                              <div className=" mx-auto">
+                                {checkIfBoughtButton(item.bought, list, item)}
+                              
                               <button
                                 type="button"
-                                className="btn text-danger btn-sm btn-link"
+                                className="btn btn-sm btn-danger ms-2"
                                 onClick={() =>
                                   handleRemoveItemModal(list, item)
                                 }
                               >
                                 Remove
                               </button>
-                            </span>
-                          </h4>
-                          <div className="row position-relative">
-                            <div className="col-6 text-center card">
-                              <img
-                                src="https://bit.ly/3R0TRlE"
-                                className="img-fluid rounded card-img-top"
-                                alt="..."
-                              />
-                              {checkIfBoughtTick(item.bought)}
-                            </div>
-
-                            <div className="col-6 my-auto text-center">
-                              <p>{}</p>
-                              <div>
-                                {checkIfBoughtButton(item.bought, list, item)}
                               </div>
-                            </div>
+                            </div> */}
                           </div>
                           <div className="row my-auto text-center me-2"></div>
                         </ListGroup.Item>

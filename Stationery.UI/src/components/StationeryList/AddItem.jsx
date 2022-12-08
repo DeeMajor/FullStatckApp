@@ -19,14 +19,14 @@ function AddItem(props) {
             variant="secondary"
             onClick={() => props.onClose()}
           >
-            cancel
+            Cancel
           </Button>
           <Button
             className="ms-2 btn-sm"
             variant="danger"
             /*  onClick={() => props.onDelete(props.list, props.item.id)} */
           >
-            remove
+            Remove
           </Button>
         </div>
       </Modal.Body>

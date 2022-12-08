@@ -44,7 +44,7 @@ function UpdateList(props) {
           }}
         >
           <Button variant="outline-secondary" onClick={() => props.onClose()}>
-            cancel
+            Cancel
           </Button>
           <Button variant="secondary" type="submit">
             Save
