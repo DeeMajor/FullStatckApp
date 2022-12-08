@@ -7,15 +7,20 @@ import CreateList from "../StationeryList/createList";
 import React, { useContext, useState, useEffect } from "react";
 import ListGroup from "react-bootstrap/ListGroup";
 import Update from "./Update";
+import LoadingSpinner from "../Assets/LoadSpinner";
+import Tick from "../../images/tick.png";
 
 function StationeryList(props) {
   const [modal, setModal] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   const HandleDeleteItem = async (list, itemId) => {
     setModal();
+    setIsLoading(true);
     const resp = await props.DeleteStatItem(list, itemId);
     if (resp !== 1) {
       await props.fetch();
+      setIsLoading(false);
       const message = "Item has been removed successfully";
       setModal(
         <Success show={true} message={message} onClose={handleCloseModal} />
@@ -31,9 +36,11 @@ function StationeryList(props) {
 
   const HandleDeleteStationery = async (id) => {
     setModal();
+    setIsLoading(true);
     const resp = await props.Delete(id);
     if (resp !== 1) {
       await props.fetch();
+      setIsLoading(false);
       const message = "List has been removed";
       setModal(
         <Success show={true} message={message} onClose={handleCloseModal} />
@@ -44,10 +51,12 @@ function StationeryList(props) {
   };
 
   const HandleCreate = async (list) => {
+    setIsLoading(true);
     const resp = await props.PostList(list);
     setModal();
     if (resp !== 1) {
       await props.fetch();
+      setIsLoading(false);
       const message = "List successfully created";
       setModal(
         <Success
@@ -58,6 +67,7 @@ function StationeryList(props) {
         />
       );
     } else {
+      setIsLoading(false);
       const message =
         "List could not be created. Please try again or contact admin if issue persists.";
       setModal(
@@ -67,9 +77,12 @@ function StationeryList(props) {
   };
 
   const HandleUpdate = async (list) => {
+    setIsLoading(true);
     const resp = await props.Update(list);
     setModal();
     if (resp !== 1) {
+      await props.fetch();
+      setIsLoading(false);
       const message = "List successfully Updated";
       setModal(
         <Success
@@ -89,6 +102,7 @@ function StationeryList(props) {
   };
 
   const GetListItem = async (list, item) => {
+    setIsLoading(true);
     let resp = await props.GetListItem();
     const itemList = resp.find(
       (itemList) =>
@@ -100,6 +114,7 @@ function StationeryList(props) {
 
     if (resp !== 1) {
       await props.fetch();
+      setIsLoading(false);
       const message = "item updated";
       setModal(
         <Success show={true} onClose={handleCloseModal} message={message} />
@@ -189,25 +204,37 @@ function StationeryList(props) {
     }
   }
 
+  function checkIfBoughtTick(bought) {
+    if (bought) {
+      return (
+        <div className="card-img-overlay card-inverse bg-secondary text-dark bg-opacity-75">
+          <div className="card-block pt-5">
+            <img src={Tick} alt="tick" width="150" />
+          </div>
+        </div>
+      );
+    }
+  }
+
   function checkIfBoughtButton(bought, list, item) {
     if (!bought) {
       return (
         <button
           type="button"
-          className="btn btn-link"
+          className="btn btn-success"
           onClick={() => GetListItem(list, item)}
         >
-          BOUGHT
+          Bought
         </button>
       );
     } else {
       return (
         <button
           type="button"
-          className="btn btn-link"
+          className="btn btn-warning btn-sm"
           onClick={() => NotAcquired(list, item)}
         >
-          Don't have
+          Void
         </button>
       );
     }
@@ -229,7 +256,7 @@ function StationeryList(props) {
       There are no items in this list.
       <button
         type="button"
-        class="btn btn-link"
+        className="btn btn-link"
         onClick={() => props.onPage("items")}
       >
         Add items.
@@ -245,85 +272,112 @@ function StationeryList(props) {
     }
   };
 
+  const calcTotalEstimate = (list) => {
+    let total = 0;
+    list.items.forEach((item) => {
+      total += item.itemPrice * item.quantity;
+    });
+
+    return total;
+  };
+
+  const checkComplete = () => {};
+
   return (
     <React.Fragment>
-      <div className="">
-        <div className="text-center mb-3">
-          <h2>STATIONERY LIST</h2>
-          {props.List == 0 && noLists}
-          <a
-            className="mx-auto my-auto btn btn-secondary"
-            role="button"
-            onClick={() => handleCreateModal()}
-          >
-            Create New
-          </a>
-        </div>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="">
+          <div className="text-center mb-3">
+            <h2>STATIONERY LIST</h2>
+            {props.List == 0 && noLists}
+            <a
+              className="mx-auto my-auto btn btn-secondary"
+              role="button"
+              onClick={() => handleCreateModal()}
+            >
+              Create New
+            </a>
+          </div>
 
-        {modal}
-        <Accordion flush>
-          {props.List !== undefined &&
-            props.List.map((list) => (
-              <Accordion.Item eventKey={list.id} key={list.id} list={list}>
-                <Accordion.Header className="sticky-top ">
-                  <a
-                    className="ms-1 me-5 bi bi-x-circle-fill text-center text-decoration-none link-danger"
-                    role="button"
-                    onClick={() => handleDeleteStationarModal(list)}
-                  ></a>
-                  <a role="button" className="text-primary ms-1 me-5">
-                    <i
-                      className="bi bi-pencil-square"
-                      onClick={() => handleUpdateModal(list)}
-                    ></i>
-                  </a>{" "}
-                  {list.child}
-                  <span className="text-capitalize">'s List</span>
-                </Accordion.Header>
+          {modal}
+          <Accordion flush>
+            {props.List !== undefined &&
+              props.List.map((list) => (
+                <Accordion.Item eventKey={list.id} key={list.id} list={list}>
+                  <div className="sticky-top accordion-button-extra d-flex justify-content-between">
+                    <a
+                      className=" bi bi-x-circle-fill fs-4 text-decoration-none link-danger ms-3 mt-2"
+                      role="button"
+                      onClick={() => handleDeleteStationarModal(list)}
+                    ></a>
+                    <a role="button" className="text-primary mt-2">
+                      <i
+                        className="bi bi-pencil-square fs-4"
+                        onClick={() => handleUpdateModal(list)}
+                      ></i>
+                    </a>{" "}
+                    <p className="mt-3">{list.child}</p>
+                    <span className=" mt-3">
+                      {" "}
+                      {""}Total Estimate: <b>R{calcTotalEstimate(list)}</b>
+                    </span>
+                    <Accordion.Header className="float-end">
+                      {/* <span>{Uncomplete} </span> */}
+                    </Accordion.Header>
+                  </div>
 
-                <Accordion.Body>
-                  <ListGroup variant="flush">
-                    {checkforItems(list.items)}
-                    {list.items.map((item) => (
-                      <ListGroup.Item
-                        key={item.item_Id}
-                        className="bg-secondary text-dark bg-opacity-10 mb-2"
-                      >
-                        <h4 className="text-center">{item.itemName}</h4>
-                        <div className="row position-relative">
-                          <div className="col-6 text-center">
-                            <img
-                              src="https://bit.ly/3R0TRlE"
-                              className="img-fluid rounded"
-                              alt="..."
-                            />
-                          </div>
-                          <div className="col-6 my-auto text-center">
-                            <h6 className="text-center">status</h6>
-                            {checkIfBought(item.bought)}
-                            <div>
-                              mark as...
-                              {checkIfBoughtButton(item.bought, list, item)}
+                  <Accordion.Body className="bg-secondary text-dark bg-opacity-10">
+                    <ListGroup variant="flush">
+                      {checkforItems(list.items)}
+                      {list.items.map((item) => (
+                        <ListGroup.Item
+                          key={item.item_Id}
+                          className=" text-dark bg-opacity-10 mb-2"
+                        >
+                          <h4 className="text-center">
+                            {item.itemName}{" "}
+                            <span className="fs-6">
+                              (X{item.quantity}){" "}
+                              <button
+                                type="button"
+                                className="btn text-danger btn-sm btn-link"
+                                onClick={() =>
+                                  handleRemoveItemModal(list, item)
+                                }
+                              >
+                                Remove
+                              </button>
+                            </span>
+                          </h4>
+                          <div className="row position-relative">
+                            <div className="col-6 text-center card">
+                              <img
+                                src="https://bit.ly/3R0TRlE"
+                                className="img-fluid rounded card-img-top"
+                                alt="..."
+                              />
+                              {checkIfBoughtTick(item.bought)}
                             </div>
 
-                            <button
-                              type="button"
-                              className="btn btn-danger"
-                              onClick={() => handleRemoveItemModal(list, item)}
-                            >
-                              Remove
-                            </button>
+                            <div className="col-6 my-auto text-center">
+                              <p>{}</p>
+                              <div>
+                                {checkIfBoughtButton(item.bought, list, item)}
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                        <div className="row my-auto text-center me-2"></div>
-                      </ListGroup.Item>
-                    ))}
-                  </ListGroup>
-                </Accordion.Body>
-              </Accordion.Item>
-            ))}
-        </Accordion>
-      </div>
+                          <div className="row my-auto text-center me-2"></div>
+                        </ListGroup.Item>
+                      ))}
+                    </ListGroup>
+                  </Accordion.Body>
+                </Accordion.Item>
+              ))}
+          </Accordion>
+        </div>
+      )}
     </React.Fragment>
   );
 }

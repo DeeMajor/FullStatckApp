@@ -57,15 +57,16 @@ function App() {
     try {
       const list = await useFetchStationery();
       setstList(list.data.value);
+      /* setIsLoading(false); */
     } catch (error) {
       console.log(error);
     }
   };
 
   const PostList = async (list) => {
+    /* setIsLoading(true); */
     try {
       const postRes = await usePostStationery(list);
-
       return 0;
     } catch (error) {
       console.log("Error!!", error);
@@ -164,6 +165,7 @@ function App() {
       Delete={HandleStatDelete}
       DeleteStatItem={HandleDeleteStatItem}
       onPage={HandleLink}
+      /* Loader={HandleLoader} */
     />
   );
 
@@ -184,7 +186,7 @@ function App() {
 
   return (
     <React.Fragment>
-      <NavBar active={eventLink} onPage={HandleLink} />
+      <NavBar active={eventLink} onPage={HandleLink} />(
       <div className="row">
         <div className="col-lg-2"></div>
         <div className="col-lg-8">
@@ -192,6 +194,7 @@ function App() {
         </div>
         <div className="col-lg-2"></div>
       </div>
+      )
     </React.Fragment>
   );
 }

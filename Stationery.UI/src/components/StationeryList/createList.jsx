@@ -26,7 +26,7 @@ function CreateList(props) {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Modal.Body className="">
           <div className="">
-            <h6 className="fw-light text-center">Whos is it for?</h6>
+            <h6 className="fw-light text-center">Who is it for?</h6>
           </div>
 
           <FloatingLabel
@@ -48,9 +48,9 @@ function CreateList(props) {
           }}
         >
           <Button variant="outline-secondary" onClick={() => props.onClose()}>
-            cancel
+            Cancel
           </Button>
-          <Button variant="secondary" type="submit">
+          <Button variant="dark" type="submit">
             Create
           </Button>
         </Modal.Footer>
