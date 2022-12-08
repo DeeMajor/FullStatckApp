@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const url = "https://localhost:7088/api/Stationery";
+const url = "https://mystationery.azurewebsites.net/api/Stationery";
 
 function useGetStationery() {
   const [stationeryLists, setStationList] = useState([]);

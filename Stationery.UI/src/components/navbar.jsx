@@ -11,7 +11,7 @@ function NavBar(props) {
         </a>
 
         <div className="nav-item" role="search">
-          {/* <h1>MY-STATIONERY</h1> */}
+          <h3>MY-STATIONERY-APP</h3>
         </div>
 
         <div className="d-flex flex-row-reverse">
