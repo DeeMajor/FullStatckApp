@@ -128,7 +128,7 @@ function Items(props) {
 
                       <div className="card-body ">
                         <p className="card-text">
-                          estimate <b>R{item.itemPrice}</b>
+                          estimate <b>R{item.itemPrice.toFixed(2)}</b>
                         </p>
                       </div>
                     </div>
