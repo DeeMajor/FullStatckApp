@@ -378,7 +378,7 @@ function StationeryList(props) {
                               {checkIfBoughtTick(item.bought)}
                             </div>
                             <div className="col-5 my-auto fs-6 ">
-                            <span className="text-primary fs-3 d-flex justify-content-center">R{item.itemPrice}<span className="fs-6 text-dark">(X{item.quantity}){" "}</span></span>
+                            <span className="text-primary fs-3 d-flex justify-content-center">R{item.itemPrice.toFixed(2)}<span className="fs-6 text-dark">(X{item.quantity}){" "}</span></span>
                             <p className="d-flex justify-content-center">{item.itemDescription}</p>
                             <div className="d-flex justify-content-center">{checkIfBoughtButton(item.bought, list, item)}
                             <button
