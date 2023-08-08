@@ -24,7 +24,7 @@ function RemoveItem(props) {
           <Button
             className="ms-2 btn-sm"
             variant="danger"
-            onClick={() => props.onDelete(props.list, props.item.id)}
+            onClick={() => props.onDelete(props.list, props.item.item_Id)}
           >
             Remove
           </Button>

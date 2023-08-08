@@ -39,7 +39,7 @@ function StationeryList(props) {
 
   const HandleDeleteStationery = async (id) => {
     setModal();
-    setIsLoading(true);
+    // setIsLoading(true);
     const resp = await props.Delete(id);
     if (resp !== 1) {
       await props.fetch();
@@ -112,7 +112,7 @@ function StationeryList(props) {
         itemList.fK_ItemId_Id === item.item_Id &&
         itemList.fK_StationeryList_Id === list.id
     );
-    itemList.bought = true;
+    // itemList.bought = true;
     resp = await props.MakeBought(itemList);
 
     if (resp !== 1) {
@@ -375,12 +375,13 @@ function StationeryList(props) {
                                 className="img-fluid rounded card-img-top"
                                 alt="..."
                               />
-                              {checkIfBoughtTick(item.bought)}
+                              {/* {checkIfBoughtTick(item.bought)} */}
                             </div>
                             <div className="col-5 my-auto fs-6 ">
                             <span className="text-primary fs-3 d-flex justify-content-center">R{item.itemPrice.toFixed(2)}<span className="fs-6 text-dark">(X{item.quantity}){" "}</span></span>
                             <p className="d-flex justify-content-center">{item.itemDescription}</p>
-                            <div className="d-flex justify-content-center">{checkIfBoughtButton(item.bought, list, item)}
+                            <div className="d-flex justify-content-center">
+                              {/* {checkIfBoughtButton(item.bought, list, item)} */}
                             <button
                                 type="button"
                                 className="btn btn-sm btn-danger ms-2"

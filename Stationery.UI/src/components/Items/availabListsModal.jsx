@@ -51,6 +51,8 @@ function AvailableLists(props) {
         props.onAddItem(
           props.lists[i].id,
           props.item.item_Id,
+          props.item.pictureUrl,
+          props.item.itemPrice,
           props.lists[i],
           props.item,
           data[`${i}`]

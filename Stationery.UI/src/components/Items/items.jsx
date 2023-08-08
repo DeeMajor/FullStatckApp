@@ -50,12 +50,14 @@ function Items(props) {
     return rangeList;
   };
 
-  const HandleAddItem = async (Listid, itemId, list, item, quantity) => {
+  const HandleAddItem = async (Listid, itemId, pictureUrl, itemPrice, list, item, quantity) => {
     setModal();
     setIsLoading(true);
     const newListItem = {
       fK_ItemId_Id: itemId,
       fK_StationeryList_Id: Listid,
+      pictureUrl: pictureUrl,
+      itemPrice: itemPrice,
       quantity: quantity,
       bought: false,
     };
