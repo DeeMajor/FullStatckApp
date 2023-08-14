@@ -9,6 +9,12 @@ This project contains two applications:
 
 # Lesson 1: Project Set Up & Powershell
 
+**Outcome:**
+
+ - Build projects locally
+ - Setup a repository for a project
+ - Use Powershell for automation
+
 **SCENARIO:** Company ABC has reached out to you to provide your expertise in DevOps. The organization presently maintains a group of developers engaged in a unified project. The existing workflow involves each programmer duplicating their work directory upon task completion and sending it to their team lead or the succeeding programmer. Regrettably, this approach to code collaboration has introduced challenges in maintaining version control, leading to occasional instances of overwritten work and even loss of progress.
 
  1. You've been tasked with establishing a repository utilizing git as the chosen version control system. The company has opted for GitLab as the platform to host their remote repository.
@@ -16,7 +22,7 @@ This project contains two applications:
 
 ## Task 1: Run The Source Code Locally
 
-The source code file has been sent to you by the team lead via email. It would be prudent to set up and run the code locally to verify its functionality. 
+The source code file has been sent to you by the team lead via email. Setting up and running the code locally to verify its functionality would be prudent. 
 
 Your first task is to run the code locally. The team lead has specified the following programming frameworks that the code runs on:
  - .Net 6 
