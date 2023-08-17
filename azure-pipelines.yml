@@ -28,8 +28,6 @@ steps:
     projects: '**/*.csproj'
     arguments: '--configuration $(buildConfiguration)'
 
-
-
 - task: Npm@1
   inputs:
     command: 'install'
@@ -54,6 +52,7 @@ steps:
     publishWebProjects: True
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
+
 - task: PublishBuildArtifacts@1
   displayName: PushToContainer
   inputs:
