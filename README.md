@@ -37,7 +37,8 @@ Your first task is to run the code locally. The team lead has specified the foll
  - Git
     `git --version`
 
-Pause to confirm all dependencies.
+Notice these programs all have CLI usability.
+Confirm all dependencies are installed correctly for everyone.
 Mention options are program dependant and to find most use -h or --help.
 
 ## Task 2: Set Up a Repository - Dwane (Andile on PC)
@@ -69,5 +70,3 @@ Call file with `..\script.ps1`
 Do 1 line at a time and test script then clean dir with `git clean -xdf`
 
 >Try out using $LASTEXITCODE checks
-
->Notice the CLIs you are using
