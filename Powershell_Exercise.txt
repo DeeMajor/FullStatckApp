@@ -1,9 +1,0 @@
-mkdir Evidence (New-Item -ItemType "directory" -Name "Evidence")
-New-Item Confession.txt (Linux= touch Confession.txt)
-Add-Content .\Confession.txt "I can script."
-Rename-Item .\Confession.txt Appeal.txt
-cd ..
-mkdir New_Evidence
-Copy-Item .\Evidence\Appeal.txt .\New_Evidence\
-Remove-Item -r .\Evidence\
-(Get-ChildItem -Directory).Name | Out-File .\New_Evidence\directories.txt (Speak about members)
