@@ -1,11 +1,15 @@
+using Stationery.Api;
 using Stationery.Api.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseWindowsService();
+
 ConfigServices.ConfigureServices(builder.Services, builder);
 
-// Add services to the container.
 
+// Add services to the container.
+builder.Services.AddWindowsService();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -21,6 +25,7 @@ builder.Services.AddCors(options =>
         });
 });
 
+
 var app = builder.Build();
 
 app.UseCors("MyAllowedOrigins");
@@ -31,7 +36,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.ConfigureExceptionHandler();
 
 app.UseHttpsRedirection();
