@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const url = "https://localhost:7088/api/Stationery";
+const url = "http://localhost:5088/api/Stationery";
 
 function useGetStationery() {
   const [stationeryLists, setStationList] = useState([]);
