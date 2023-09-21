@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const url = "http://localhost:5088/api/ItemLists/";
+const url = "http://localhost:7088/api/ItemLists/";
 
 function useGetItemLists(id) {
   const [items, setItems] = useState([]);
