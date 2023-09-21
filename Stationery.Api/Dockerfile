@@ -8,9 +8,6 @@ RUN dotnet restore
 # Build and publish a release
 RUN dotnet publish -c Release -o out
 
-RUN dotnet dev-certs https
-RUN dotnet dev-certs https --trust
-
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /App
