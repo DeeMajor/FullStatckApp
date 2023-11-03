@@ -17,22 +17,34 @@ function NavBar(props) {
         <div className="d-flex flex-row-reverse">
           <div className="p-2">
             <Nav fill variant="pills" activeKey={props.eventlink}>
+              
               <Nav.Item>
                 <Nav.Link
-                  className={props.active !== "2" && "active"}
+                  className={props.active === "List" && "active"}
                   onClick={() => props.onPage("Stationery")}
                 >
                   Lists
                 </Nav.Link>
               </Nav.Item>
+
               <Nav.Item>
                 <Nav.Link
-                  className={props.active !== "1" && "active"}
+                  className={props.active === "Items" && "active"}
                   onClick={() => props.onPage("items")}
                 >
                   Items
                 </Nav.Link>
               </Nav.Item>
+
+              <Nav.Item>
+                <Nav.Link
+                  className={props.active === "Login" && "active"}
+                  onClick={() => props.onPage("Login")}
+                >
+                  Login
+                </Nav.Link>
+              </Nav.Item>
+
             </Nav>
           </div>
         </div>

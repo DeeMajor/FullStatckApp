@@ -1,6 +1,7 @@
 import NavBar from "./components/navbar";
 import StationeryList from "./components/StationeryList/stationeryList";
 import Items from "./components/Items/items";
+import Login from "./components/Authentication/login";
 import "./App.css";
 import React, { useEffect, useState } from "react";
 import {
@@ -25,7 +26,7 @@ function App() {
   const [stList, setstList] = useState();
   const [items, setItems] = useState();
   const [component, setComponent] = useState("start");
-  const [eventLink, setEventLink] = useState("1");
+  const [eventLink, setEventLink] = useState("List");
 
   useEffect(() => {
     setstList(staioneryList);
@@ -36,11 +37,7 @@ function App() {
   }, [itemsData]);
 
   useEffect(() => {
-    if (eventLink === "1") {
       setComponent(StionaeryListComponent);
-    } else {
-      setComponent(ItemsComponent);
-    }
   }, [stList]);
 
   const HandleDeleteStatItem = async (list, itemId) => {
@@ -145,11 +142,14 @@ function App() {
 
   const HandleLink = (component) => {
     if (component === "items") {
-      setEventLink("2");
+      setEventLink("Items");
       setComponent(ItemsComponent);
     } else if (component === "Stationery") {
-      setEventLink("1");
+      setEventLink("List");
       setComponent(StionaeryListComponent);
+    } else if (component === "Login"){
+      setEventLink("Login");
+      setComponent(LoginComponent);
     }
   };
 
@@ -183,6 +183,13 @@ function App() {
       FetchItems={HandleFetchItems}
     />
   );
+  
+  const LoginComponent = (
+    <Login
+      onPage={HandleLink}
+    />
+  );
+
 
   return (
     <React.Fragment>
